@@ -1,0 +1,385 @@
+{
+ "language": "en",
+ "slug": "support-agent-onboarding",
+ "subtitle": "",
+ "program_title": "TRAINING PROGRAM: NEW SUPPORT AGENT ONBOARDING (WEEK ONE)",
+ "basis_note": "",
+ "total_hours": 24,
+ "target_learners": [
+  "New customer support agents at a SaaS company; about 40 people in cohorts.",
+  "Entry: basic computer skills and written English; no support experience required."
+ ],
+ "general_objective": [
+  "Equip new agents to handle customer tickets independently by the end of the first week, within the SLA and the quality rubric."
+ ],
+ "specific_objectives": {
+  "knowledge": [
+   "Describe the ticket life cycle, SLA, product and escalation rules;"
+  ],
+  "skills": [
+   "Resolve, answer and escalate tickets in the helpdesk to the quality rubric;"
+  ],
+  "autonomy": [
+   "Take responsibility for their own queue and ask for help at the right time."
+  ]
+ },
+ "elective_note": "",
+ "modules": [
+  {
+   "code": "M01",
+   "title": "Support foundations and the ticket workflow",
+   "required": true,
+   "position": "First module of the program. It comes before all ticket-handling modules.",
+   "nature": "Required module that integrates knowledge and skill; builds the ability to run one ticket through the helpdesk.",
+   "objectives": {
+    "knowledge": [
+     "Describe the support team structure, service levels (SLA) and ticket life cycle;"
+    ],
+    "skills": [
+     "Process a ticket from queue to closure in the helpdesk tool within the SLA;"
+    ],
+    "autonomy": [
+     "Comply with the team's SLA and tagging rules on every ticket."
+    ]
+   },
+   "lessons": [
+    {
+     "title": "Support team, SLA and ticket life cycle",
+     "theory": 1,
+     "practice": 1,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "List the ticket statuses and the SLA target of each priority level without notes.",
+      "skills": "Set priority and status on 5 sandbox tickets, all correct against the SLA table.",
+      "autonomy": "Comply with the SLA table when setting priority on every ticket."
+     },
+     "content": [
+      "1. Team structure and tiers",
+      "2. SLA and priority levels",
+      "2.1. First response and resolution targets",
+      "3. Practice: set status and priority on 5 sandbox tickets"
+     ],
+     "overview": [
+      "Team structure and tiers",
+      "SLA and priority levels"
+     ]
+    },
+    {
+     "title": "Working the queue in the helpdesk tool",
+     "theory": 1,
+     "practice": 2,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "Describe the filters, views, tags and macros used in the helpdesk tool.",
+      "skills": "Work 8 sandbox tickets from queue to closure in 90 minutes, with correct tags and at least one macro each.",
+      "autonomy": "Take initiative to flag a mis-tagged ticket to the team lead."
+     },
+     "content": [
+      "1. Queue views and filters",
+      "2. Tags, macros and internal notes",
+      "3. Practice: clear an 8-ticket sandbox queue"
+     ]
+    }
+   ],
+   "exam_hours": 0,
+   "conditions": {
+    "learning_space": "Live online classroom (video conference) with breakout rooms.",
+    "equipment": "Laptop with webcam and headset, stable Internet, access to the training helpdesk sandbox.",
+    "materials": "Sandbox ticket queue, macro library, scenario cards, scoring rubric.",
+    "other_resources": "A senior agent as co-facilitator and the internal knowledge base."
+   },
+   "assessment": {
+    "content": {
+     "knowledge": "SLA levels and ticket statuses.",
+     "skills": "Ticket queue worked in the sandbox.",
+     "autonomy": "Compliance with SLA and tagging rules."
+    },
+    "method": "Formative: facilitator checks the sandbox queue against a checklist."
+   },
+   "guidelines": {
+    "scope": "For all new support agents in the onboarding cohort.",
+    "instructor": "Demonstrate live in the sandbox, then run timed practice rounds in breakout rooms and give feedback against the rubric.",
+    "learners": "Join the live session with camera on, work tickets in the sandbox, review a peer's replies.",
+    "key_points": [
+     "Every reply is checked against the rubric before it is sent;",
+     "Learners work real-style tickets, not slides."
+    ]
+   },
+   "references": [
+    "Internal support playbook and knowledge base of the company (current version)."
+   ]
+  },
+  {
+   "code": "M02",
+   "title": "Product knowledge and troubleshooting",
+   "required": true,
+   "position": "Follows M01. Prepares for writing customer replies in M03.",
+   "nature": "Required module integrating product knowledge and diagnostic skill.",
+   "objectives": {
+    "knowledge": [
+     "Describe the core product features, plans and common failure points;"
+    ],
+    "skills": [
+     "Diagnose a customer problem and resolve it using the knowledge base and product sandbox;"
+    ],
+    "autonomy": [
+     "Verify the fix with the customer before closing a ticket."
+    ]
+   },
+   "lessons": [
+    {
+     "title": "Core product features and plans",
+     "theory": 1,
+     "practice": 2,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "Describe the 6 core features and the 3 plan tiers and which limits apply to each.",
+      "skills": "Reproduce 5 typical customer scenarios in the product sandbox.",
+      "autonomy": "Take responsibility for checking the customer's plan before suggesting a feature."
+     },
+     "content": [
+      "1. Core features",
+      "2. Plans and limits",
+      "3. Practice: reproduce 5 customer scenarios in the sandbox"
+     ]
+    },
+    {
+     "title": "Diagnosing and resolving common issues",
+     "theory": 1,
+     "practice": 2,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "List the diagnostic questions for login, billing and integration issues.",
+      "skills": "Resolve 6 sandbox tickets using the knowledge base, with steps that a customer can follow, in 20 minutes each.",
+      "autonomy": "Cooperate with the senior agent when a root cause is unclear."
+     },
+     "content": [
+      "1. Diagnostic questions",
+      "2. Searching the knowledge base",
+      "3. Practice: resolve 6 sandbox tickets"
+     ]
+    }
+   ],
+   "exam_hours": 1,
+   "conditions": {
+    "learning_space": "Live online classroom with product sandbox.",
+    "equipment": "Laptop with webcam and headset, stable Internet, access to the training helpdesk sandbox.",
+    "materials": "Sandbox ticket queue, macro library, scenario cards, scoring rubric.",
+    "other_resources": "A senior agent as co-facilitator and the internal knowledge base."
+   },
+   "assessment": {
+    "content": {
+     "knowledge": "Features, plans and diagnostic questions.",
+     "skills": "Resolved sandbox tickets.",
+     "autonomy": "Verification step before closure."
+    },
+    "method": "Practical test: resolve 3 unseen sandbox tickets scored with a rubric."
+   },
+   "guidelines": {
+    "scope": "For all new support agents in the onboarding cohort.",
+    "instructor": "Demonstrate live in the sandbox, then run timed practice rounds in breakout rooms and give feedback against the rubric.",
+    "learners": "Join the live session with camera on, work tickets in the sandbox, review a peer's replies.",
+    "key_points": [
+     "Every reply is checked against the rubric before it is sent;",
+     "Learners work real-style tickets, not slides."
+    ]
+   },
+   "references": [
+    "Internal support playbook and knowledge base of the company (current version)."
+   ]
+  },
+  {
+   "code": "M03",
+   "title": "Customer communication in writing and live chat",
+   "required": true,
+   "position": "Follows M02. It applies product knowledge to real replies.",
+   "nature": "Required module building the competency of writing clear, empathetic replies.",
+   "objectives": {
+    "knowledge": [
+     "State the structure of an effective support reply and the tone rules of the company;"
+    ],
+    "skills": [
+     "Write replies and live-chat responses that meet the quality rubric;"
+    ],
+    "autonomy": [
+     "Show care and a calm tone with frustrated customers."
+    ]
+   },
+   "lessons": [
+    {
+     "title": "Writing clear and empathetic replies",
+     "theory": 1,
+     "practice": 2,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "State the 5 parts of a support reply and the tone rules.",
+      "skills": "Write 6 email replies from scenario cards, each scoring at least 4 of 5 on the rubric.",
+      "autonomy": "Exercise care in tone on every reply."
+     },
+     "content": [
+      "1. Structure of a reply",
+      "2. Tone and empathy",
+      "3. Practice: write 6 replies and peer-review them"
+     ]
+    },
+    {
+     "title": "Live chat and difficult customers",
+     "theory": 1,
+     "practice": 2,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "Describe techniques for de-escalating an angry customer.",
+      "skills": "Handle 3 live chat role-plays, keeping the customer calm and resolving the issue within 10 minutes.",
+      "autonomy": "Remain calm under pressure during role-plays."
+     },
+     "content": [
+      "1. Live chat pacing and multitasking",
+      "2. De-escalation techniques",
+      "3. Practice: 3 role-played chats"
+     ]
+    }
+   ],
+   "exam_hours": 1,
+   "conditions": {
+    "learning_space": "Live online classroom with breakout pairs.",
+    "equipment": "Laptop with webcam and headset, stable Internet, access to the training helpdesk sandbox.",
+    "materials": "Sandbox ticket queue, macro library, scenario cards, scoring rubric.",
+    "other_resources": "A senior agent as co-facilitator and the internal knowledge base."
+   },
+   "assessment": {
+    "content": {
+     "knowledge": "Reply structure and tone rules.",
+     "skills": "Written replies and role-plays.",
+     "autonomy": "Calm, respectful tone."
+    },
+    "method": "Rubric-scored test: 2 written replies and 1 live-chat role-play."
+   },
+   "guidelines": {
+    "scope": "For all new support agents in the onboarding cohort.",
+    "instructor": "Demonstrate live in the sandbox, then run timed practice rounds in breakout rooms and give feedback against the rubric.",
+    "learners": "Join the live session with camera on, work tickets in the sandbox, review a peer's replies.",
+    "key_points": [
+     "Every reply is checked against the rubric before it is sent;",
+     "Learners work real-style tickets, not slides."
+    ]
+   },
+   "references": [
+    "Internal support playbook and knowledge base of the company (current version)."
+   ]
+  },
+  {
+   "code": "M04",
+   "title": "Escalation, handoff and independent handling",
+   "required": true,
+   "position": "Last module. It combines M01 to M03 into independent work.",
+   "nature": "Required integrated module ending with a supervised solo shift.",
+   "objectives": {
+    "knowledge": [
+     "Describe the escalation criteria and the handoff template;"
+    ],
+    "skills": [
+     "Escalate a ticket with a complete handoff note and handle a supervised solo queue;"
+    ],
+    "autonomy": [
+     "Take responsibility for own queue and ask for help at the right time."
+    ]
+   },
+   "lessons": [
+    {
+     "title": "Escalation and handoff",
+     "theory": 1,
+     "practice": 1,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "List the escalation criteria for bugs, security and billing disputes.",
+      "skills": "Write 4 handoff notes with all required fields, each accepted by the receiving team without questions.",
+      "autonomy": "Take initiative to escalate when criteria are met."
+     },
+     "content": [
+      "1. Escalation criteria",
+      "2. Handoff template",
+      "3. Practice: write 4 handoff notes"
+     ]
+    },
+    {
+     "title": "Supervised solo queue",
+     "theory": 0,
+     "practice": 2,
+     "assessment": 0,
+     "objectives": {
+      "knowledge": "Describe how own queue performance is measured.",
+      "skills": "Handle a live-style queue of 12 tickets alone in 2 hours with 90 percent meeting SLA.",
+      "autonomy": "Take responsibility for the quality of every ticket sent."
+     },
+     "content": [
+      "1. Practice: solo queue of 12 tickets",
+      "2. Debrief against the rubric"
+     ]
+    }
+   ],
+   "exam_hours": 1,
+   "conditions": {
+    "learning_space": "Live online classroom plus supervised sandbox shift.",
+    "equipment": "Laptop with webcam and headset, stable Internet, access to the training helpdesk sandbox.",
+    "materials": "Sandbox ticket queue, macro library, scenario cards, scoring rubric.",
+    "other_resources": "A senior agent as co-facilitator and the internal knowledge base."
+   },
+   "assessment": {
+    "content": {
+     "knowledge": "Escalation criteria.",
+     "skills": "Solo queue result and handoff notes.",
+     "autonomy": "Timely escalation and ownership."
+    },
+    "method": "Final practical: supervised solo queue scored with the rubric."
+   },
+   "guidelines": {
+    "scope": "For all new support agents in the onboarding cohort.",
+    "instructor": "Demonstrate live in the sandbox, then run timed practice rounds in breakout rooms and give feedback against the rubric.",
+    "learners": "Join the live session with camera on, work tickets in the sandbox, review a peer's replies.",
+    "key_points": [
+     "Every reply is checked against the rubric before it is sent;",
+     "Learners work real-style tickets, not slides."
+    ]
+   },
+   "references": [
+    "Internal support playbook and knowledge base of the company (current version)."
+   ]
+  }
+ ],
+ "implementation_guidelines": [
+  {
+   "heading": "1. Admission, delivery, assessment and certification",
+   "sections": [
+    {
+     "heading": "1.1. Admission",
+     "items": [
+      "Admit all new support hires; cohorts of up to 20 per live group."
+     ]
+    },
+    {
+     "heading": "1.2. Delivery",
+     "items": [
+      "Mostly live online sessions over five days, with a sandbox helpdesk."
+     ]
+    },
+    {
+     "heading": "1.3. Assessment and certification",
+     "items": [
+      "Learners attend at least 80% of hours; each module is scored 10-point scale; 7.0 needed to join the live queue."
+     ]
+    },
+    {
+     "heading": "1.4. Credit transfer and recognition of prior learning",
+     "items": []
+    }
+   ]
+  },
+  {
+   "heading": "2. Requirements for the training provider",
+   "items": [
+    "Facilitator with 1 year of support experience.",
+    "Sandbox helpdesk available for each learner."
+   ]
+  }
+ ]
+}

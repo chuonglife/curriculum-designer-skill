@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+programs/
+.DS_Store
+~$*
+dist/
