@@ -6,7 +6,7 @@ You type one sentence, for example "build a 24-hour onboarding program for new s
 
 It works in Claude Code, the Claude desktop and web apps, and the Claude Agent SDK. MIT licensed. Output in English or Vietnamese.
 
-Companion skill: [Lesson Content Writer](https://github.com/chuonglife/lesson-content-writer-skill) takes each lesson of the program and writes it out in full, with objectives, instructor script, questions, practice, quiz and handouts.
+Companion skill: [Lesson Content Writer](https://github.com/chuonglife/lesson-content-writer-skill) takes each lesson of the program and writes it out in full, with objectives, instructor script, questions, practice, quiz and handouts. Then [Lesson Slide Designer](https://github.com/chuonglife/lesson-slide-designer-skill) turns each lesson into a teaching slide deck (PowerPoint) and a video script.
 
 ![Sample output: module list and time allocation](examples/udemy-course-packaging/preview.png)
 
