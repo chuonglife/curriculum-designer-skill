@@ -59,18 +59,18 @@ Program: PACKAGING AND PUBLISHING AN ONLINE COURSE ON UDEMY (45 hours)
 **Claude Code (personal, all projects)**
 
 ```bash
-git clone https://github.com/chuonglife-ops/curriculum-designer-skill ~/.claude/skills/curriculum-designer
+git clone https://github.com/chuonglife/curriculum-designer-skill ~/.claude/skills/curriculum-designer
 ```
 
 **Claude Code (one project only)**
 
 ```bash
-git clone https://github.com/chuonglife-ops/curriculum-designer-skill .claude/skills/curriculum-designer
+git clone https://github.com/chuonglife/curriculum-designer-skill .claude/skills/curriculum-designer
 ```
 
 **Claude desktop or web app**
 
-Download `curriculum-designer.skill` from the [latest release](https://github.com/chuonglife-ops/curriculum-designer-skill/releases/latest) and add it under Settings, Capabilities, Skills.
+Download `curriculum-designer.skill` from the [latest release](https://github.com/chuonglife/curriculum-designer-skill/releases/latest) and add it under Settings, Capabilities, Skills.
 
 **One dependency**
 
