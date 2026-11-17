@@ -26,6 +26,8 @@ III. PROGRAM DURATION AND TIME UNITS
     1. Program duration: N hours.              (computed)
     2. Time units: one theory hour is 45 minutes; one practice, integrated or
        discussion hour is 60 minutes; one assessment hour is 60 minutes.
+       (With "time_unit": "minutes" both lines are in minutes of learner time
+       and the default sentence explains that theory is video watching time.)
 
 IV. MODULE LIST AND TIME ALLOCATION                (table, computed)
     Module code | Module title | Total | Theory | Practice/Discussion | Assessment

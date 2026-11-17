@@ -29,7 +29,7 @@ From the request, write down five things. When something is missing, make a reas
 
 1. **Program title.**
 2. **Target learners**: job role, starting level, what they already can do.
-3. **Total hours** of learner time. Typical ranges: workshop 4 to 16, online course 20 to 60, professional certificate 40 to 300.
+3. **Total hours** of learner time. Typical ranges: workshop 4 to 16, online course 20 to 60, professional certificate 40 to 300. A micro-course of a few short videos (say 5 videos of 7 minutes) is counted in minutes instead, see Step 1.
 4. **Delivery mode**: self-paced online, live online, face to face, blended.
 5. **Source material**: any outline, slides, textbook, job description or market research the user already has. Read all of it before designing. If the user gave a draft outline, keep their module names and order unless a design rule is clearly broken, and say what you changed.
 
@@ -46,12 +46,13 @@ Starting from the work instead of from a table of contents is what separates a c
 
 Rules of thumb:
 
-- 4 to 8 modules, 2 to 5 lessons each. A module is a complete unit: finishing it gives the learner one competency they can use right away.
+- 4 to 8 modules, 2 to 5 lessons each. A module is a complete unit: finishing it gives the learner one competency they can use right away. A micro-course may have as few as 2 modules.
 - Lessons do not overlap. A later lesson uses the product of an earlier one.
 - The first module is usually orientation and core concepts. The last is usually an integrated product or a final assessment.
 - In skill modules, practice hours are at least equal to theory hours, and usually double. A pure knowledge module (regulations, concepts) may be theory-heavy.
 - Each module carries 0 to 2 assessment hours, entered as `exam_hours`.
 - Time units, unless the user's institution uses others: one theory hour is 45 minutes, one practice or discussion hour is 60 minutes, one assessment hour is 60 minutes. For self-paced video courses, theory is video watching time, practice is time spent following along and doing assignments, and total hours means learner time, not video length.
+- **Micro-courses: count in minutes.** When the user asks for a short video course (a few videos of 3 to 15 minutes, or under about 8 hours of learner time in all) or gives video lengths in minutes, set `"time_unit": "minutes"`. Every time value is then whole minutes: theory is the lesson's video length, practice the pause tasks and assignment, assessment the quiz. Put `video_minutes` on every lesson, because whoever writes the lesson from `program.json` (a person or the Lesson Content Writer skill) takes the video length from it. The 2 to 16 hour lesson length and the 4 to 8 module count do not apply. Do not fake a micro-course with one-hour lessons and a `time_unit_note`.
 
 ### Step 2. Write objectives at three levels
 
@@ -82,13 +83,15 @@ Then section VI for the whole program: admission, delivery, assessment and certi
 
 ### Step 5. Write `program.json` and build
 
-Read `references/json-schema.md` for the compact list of keys, then use `templates/program.example.json` as the worked example (it is long; read one module of it, not all eight). Keep every key present and use an empty list or empty string where something does not apply. Hours are whole numbers. An objective group accepts either one string or a list of strings. Set `"language": "en"` (or `"vi"` for Vietnamese headings). Then run:
+Read `references/json-schema.md` for the compact list of keys, then use `templates/program.example.json` as the worked example (it is long; read one module of it, not all eight). Keep every key present and use an empty list or empty string where something does not apply. Time values are whole numbers in the program's `time_unit` (hours unless it is a micro-course). An objective group accepts either one string or a list of strings. Set `"language": "en"` (or `"vi"` for Vietnamese headings). Then run:
 
 ```bash
 python <skill-folder>/scripts/build_docs.py programs/<slug>/program.json
 ```
 
-The script needs `python-docx` (`pip install python-docx`). It sums hours from lessons up to the program, builds all tables, and stops without writing anything if a declared total disagrees with the computed total. It then prints objective warnings. Fix the JSON and rerun until hours add up and the warnings are either gone or deliberately accepted.
+**Which Python.** If the user's project folder has a `.venv`, run the script with that interpreter: `.venv/Scripts/python` on Windows, `.venv/bin/python` on macOS and Linux. Otherwise use `python` (or `python3` where `python` is missing). The script needs `python-docx`; if it is missing, install `<skill-folder>/requirements.txt` into the same interpreter with `<that python> -m pip install -r <skill-folder>/requirements.txt`.
+
+The script sums the time values from lessons up to the program, builds all tables, and stops without writing anything if a declared total disagrees with the computed total. It then prints objective warnings. Fix the JSON and rerun until the totals add up and the warnings are either gone or deliberately accepted.
 
 ### Step 6. Review before you hand over
 

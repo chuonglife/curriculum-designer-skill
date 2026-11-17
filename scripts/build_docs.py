@@ -11,6 +11,12 @@ Outputs (written next to program.json unless an output folder is given):
 Usage:
   python build_docs.py path/to/program.json [output_folder]
 
+Time unit: hours by default. Set "time_unit": "minutes" at the top of
+program.json for a short video course (micro-course): every time value is then
+read as whole minutes of learner time and the tables print minutes. Any lesson
+may carry "video_minutes", the length of its video, which is printed next to
+the lesson time; it is the field a lesson writer reads for the video length.
+
 The script adds hours up from lessons to modules to the program, builds every
 time-allocation table itself, and refuses to write files when a declared total
 does not match the computed one. It also lints learning objectives and prints
@@ -85,6 +91,7 @@ LABELS = {
         "m3_2": "3.2. Detailed content",
         "lesson": "Lesson",
         "lesson_time": "Time: {n} hours",
+        "lesson_time_video": "Time: {n} hours, of which video: {v} minutes",
         "obj": "* Objectives:",
         "obj_lead": "On completing this lesson, learners are able to:",
         "content": "* Content:",
@@ -107,6 +114,7 @@ LABELS = {
         "tree_root": "Program: {t} ({n} hours)",
         "tree_mod": "{c} - {t} ({n} hours: Theory {a}, Practice {b}, Assessment {x})",
         "tree_lesson": "{t} ({n} hours)",
+        "tree_lesson_video": "{t} ({n} hours, video {v} minutes)",
         "file_program": "01_Training_Program",
         "file_overview": "00_Program_Overview",
     },
@@ -152,6 +160,7 @@ LABELS = {
         "m3_2": "3.2. Nội dung chi tiết của mô-đun",
         "lesson": "Bài",
         "lesson_time": "Thời gian: {n} giờ",
+        "lesson_time_video": "Thời gian: {n} giờ, trong đó video: {v} phút",
         "obj": "* Mục tiêu:",
         "obj_lead": "Hoàn thành bài học này, người học có khả năng:",
         "content": "* Nội dung:",
@@ -174,10 +183,58 @@ LABELS = {
         "tree_root": "Chương trình: {t} ({n} giờ)",
         "tree_mod": "{c} - {t} ({n} giờ: LT {a}, TH {b}, Thi/KT {x})",
         "tree_lesson": "{t} ({n} giờ)",
+        "tree_lesson_video": "{t} ({n} giờ, video {v} phút)",
         "file_program": "01_Chuong_trinh_dao_tao",
         "file_overview": "00_Tong_quan_chuong_trinh",
     },
 }
+
+# Overrides applied on top of LABELS when "time_unit" is "minutes" (micro-courses).
+MINUTE_LABELS = {
+    "en": {
+        "s3_1": "1. Program duration: {n} minutes of learner time (about {h} hours).",
+        "s3_2": "Time units: every time in this program is in minutes of learner time. Theory is time spent watching the lesson videos; practice is time spent on pause tasks, exercises and assignments; assessment is time spent on quizzes and graded tests.",
+        "col_time": "Time (minutes)",
+        "col_total": "Total (minutes)",
+        "duration_rest": "{t} minutes (Theory: {a} minutes; Practice, discussion: {b} minutes; Assessment: {c} minutes)",
+        "lesson_time": "Time: {n} minutes",
+        "lesson_time_video": "Time: {n} minutes, of which video: {v} minutes",
+        "tree_root": "Program: {t} ({n} minutes)",
+        "tree_mod": "{c} - {t} ({n} minutes: Theory {a}, Practice {b}, Assessment {x})",
+        "tree_lesson": "{t} ({n} minutes)",
+        "tree_lesson_video": "{t} ({n} minutes, video {v} minutes)",
+    },
+    "vi": {
+        "s3_1": "1. Thời gian bồi dưỡng: {n} phút học của người học (khoảng {h} giờ).",
+        "s3_2": "Đơn vị thời gian: mọi thời lượng trong chương trình tính bằng phút học của người học. Lý thuyết là thời gian xem video bài giảng; thực hành là thời gian làm nhiệm vụ dừng, bài luyện và bài tập; thi/ kiểm tra là thời gian làm quiz và bài kiểm tra có chấm điểm.",
+        "col_time": "Thời gian (phút)",
+        "col_total": "Tổng số (phút)",
+        "duration_rest": "{t} phút (Lý thuyết: {a} phút; Thực hành, thảo luận: {b} phút; Thi/ kiểm tra: {c} phút)",
+        "lesson_time": "Thời gian: {n} phút",
+        "lesson_time_video": "Thời gian: {n} phút, trong đó video: {v} phút",
+        "tree_root": "Chương trình: {t} ({n} phút)",
+        "tree_mod": "{c} - {t} ({n} phút: LT {a}, TH {b}, Thi/KT {x})",
+        "tree_lesson": "{t} ({n} phút)",
+        "tree_lesson_video": "{t} ({n} phút, video {v} phút)",
+    },
+}
+
+# Keys that carry a time value, by unit. Using the other unit's key is an error,
+# so a value can never be read in the wrong unit.
+UNIT_KEYS = {
+    "hours": {"exam": "exam_hours", "total": "total_hours"},
+    "minutes": {"exam": "exam_minutes", "total": "total_minutes"},
+}
+
+
+def labels_for(lang, unit):
+    T = dict(LABELS[lang])
+    if unit == "minutes":
+        T.update(MINUTE_LABELS[lang])
+    T["_lang"] = lang
+    T["_unit"] = unit
+    return T
+
 
 # Opening verbs that cannot be observed or measured. Used by the objective linter.
 WEAK_VERBS = {
@@ -199,51 +256,66 @@ def as_list(v):
 
 
 # --------------------------------------------------------------------------- hours
-def hours(v, where, errors):
-    """Hours are whole numbers. A fraction would be silently lost, so it is an error."""
+def hours(v, where, errors, unit="hours"):
+    """Time values are whole numbers. A fraction would be silently lost, so it is an error."""
     if v in (None, ""):
         return 0
     try:
         f = float(v)
     except (TypeError, ValueError):
-        errors.append(f"{where}: hours value {v!r} is not a number")
+        errors.append(f"{where}: {unit} value {v!r} is not a number")
         return 0
     if f != int(f) or f < 0:
-        errors.append(f"{where}: hours must be whole, non-negative numbers, got {v!r}")
+        errors.append(f"{where}: {unit} must be whole, non-negative numbers, got {v!r}")
     return int(f)
 
 
-def compute(prog):
+def compute(prog, unit="hours"):
     """Attach _theory/_practice/_assess/_total to lessons, modules and program."""
     errors = []
+    keys = UNIT_KEYS[unit]
+    other_unit = "minutes" if unit == "hours" else "hours"
+
+    def wrong_unit(obj, where):
+        for kind, k in UNIT_KEYS[other_unit].items():
+            if k in obj:
+                errors.append(f"{where}: '{k}' does not fit \"time_unit\": \"{unit}\"; use '{keys[kind]}'")
+
+    wrong_unit(prog, "Program")
     p = [0, 0, 0]
     for m in prog.get("modules", []):
+        wrong_unit(m, str(m.get("code")))
         mt = [0, 0, 0]
         for i, les in enumerate(m.get("lessons", []), 1):
             w = f"{m.get('code')} lesson {i}"
-            a = hours(les.get("theory"), w, errors)
-            b = hours(les.get("practice"), w, errors)
-            c = hours(les.get("assessment"), w, errors)
+            a = hours(les.get("theory"), w, errors, unit)
+            b = hours(les.get("practice"), w, errors, unit)
+            c = hours(les.get("assessment"), w, errors, unit)
             les["_no"] = i
             les["_theory"], les["_practice"], les["_assess"], les["_total"] = a, b, c, a + b + c
+            les["_video"] = None
+            if les.get("video_minutes") not in (None, ""):
+                les["_video"] = hours(les["video_minutes"], f"{w} video_minutes", errors, "minutes")
             if "total" in les and int(les["total"]) != les["_total"]:
                 errors.append(f"{m.get('code')} lesson {i}: declared total {les['total']} but theory+practice+assessment = {les['_total']}")
             mt[0] += a
             mt[1] += b
             mt[2] += c
-        exam = hours(m.get("exam_hours"), f"{m.get('code')} exam_hours", errors)
+        exam = hours(m.get(keys["exam"]), f"{m.get('code')} {keys['exam']}", errors, unit)
         m["_exam"] = exam
         mt[2] += exam
         m["_theory"], m["_practice"], m["_assess"] = mt
         m["_total"] = sum(mt)
-        if "total_hours" in m and int(m["total_hours"]) != m["_total"]:
-            errors.append(f"{m.get('code')}: declared total_hours {m['total_hours']} but lessons + exam add up to {m['_total']}")
+        tk = keys["total"]
+        if tk in m and int(m[tk]) != m["_total"]:
+            errors.append(f"{m.get('code')}: declared {tk} {m[tk]} but lessons + exam add up to {m['_total']}")
         for k in range(3):
             p[k] += mt[k]
     prog["_theory"], prog["_practice"], prog["_assess"] = p
     prog["_total"] = sum(p)
-    if "total_hours" in prog and int(prog["total_hours"]) != prog["_total"]:
-        errors.append(f"Program: declared total_hours {prog['total_hours']} but modules add up to {prog['_total']}")
+    tk = keys["total"]
+    if tk in prog and int(prog[tk]) != prog["_total"]:
+        errors.append(f"Program: declared {tk} {prog[tk]} but modules add up to {prog['_total']}")
 
     def grp(flag):
         ms = [m for m in prog.get("modules", []) if bool(m.get("required", True)) == flag]
@@ -255,7 +327,7 @@ def compute(prog):
         raise BuildError("\n".join(errors))
 
 
-def lint(prog, lang):
+def lint(prog, lang, unit="hours"):
     """Return a list of warnings about learning objectives. Never blocks the build."""
     warns = []
     weak = WEAK_VERBS.get(lang, []) + (WEAK_VERBS["en"] if lang != "en" else [])
@@ -277,17 +349,26 @@ def lint(prog, lang):
     for m in prog.get("modules", []):
         check(m.get("code", "?"), m.get("objectives"))
         for les in m.get("lessons", []):
-            check(f"{m.get('code', '?')} lesson {les['_no']}", les.get("objectives"))
-        if m["_total"] and m["_practice"] == 0 and m["_theory"] > 4:
-            warns.append(f"{m.get('code')}: {m['_theory']} theory hours and no practice")
+            w = f"{m.get('code', '?')} lesson {les['_no']}"
+            check(w, les.get("objectives"))
+            if unit == "minutes":
+                if les["_video"] is None:
+                    warns.append(f"{w}: no 'video_minutes'; the lesson writer reads the video length from it")
+                elif les["_video"] > les["_theory"]:
+                    warns.append(f"{w}: video_minutes {les['_video']} is more than its theory minutes {les['_theory']} (theory is video watching time)")
+                if les["_theory"] and not les["_practice"]:
+                    warns.append(f"{w}: no practice minutes; count the pause tasks, exercises or assignment as practice")
+        limit = 240 if unit == "minutes" else 4
+        if m["_total"] and m["_practice"] == 0 and m["_theory"] > limit:
+            warns.append(f"{m.get('code')}: {m['_theory']} theory {unit} and no practice")
     return warns
 
 
-def f2(n, blank_zero=True):
+def f2(n, blank_zero=True, pad=True):
     n = int(n or 0)
     if n == 0 and blank_zero:
         return ""
-    return f"{n:02d}"
+    return f"{n:02d}" if pad else str(n)
 
 
 def fz(n):
@@ -296,8 +377,20 @@ def fz(n):
 
 
 def singular(text):
-    """English only: '1 hours' -> '1 hour'."""
-    return re.sub(r"\b(0?1) hours\b", r"\1 hour", text)
+    """English only: '1 hours' -> '1 hour', '1 minutes' -> '1 minute'."""
+    return re.sub(r"(?<![\w.])(0?1) (hour|minute)s\b", r"\1 \2", text)
+
+
+def approx_hours(minutes):
+    """35 -> '0.6', 120 -> '2', 125 -> '2.1'."""
+    h = round(minutes / 60, 1)
+    return str(int(h)) if h == int(h) else str(h)
+
+
+def lesson_time(les, T, n):
+    if les.get("_video") is not None:
+        return T["lesson_time_video"].format(n=n, v=les["_video"])
+    return T["lesson_time"].format(n=n)
 
 
 def lesson_title(les, T):
@@ -332,6 +425,9 @@ def objective_lines(obj, T):
     return lines
 
 
+_f2 = f2
+
+
 # --------------------------------------------------------------------------- overview tree
 def build_tree(prog, T):
     short = re.sub(r"^\s*(training\s+)?program(me)?\s*:\s*", "", prog["program_title"], flags=re.I)
@@ -349,13 +445,16 @@ def build_tree(prog, T):
         for li, les in enumerate(lessons):
             last_l = li == len(lessons) - 1
             br = "`-- " if last_l else "|-- "
-            lines.append(pre1 + br + T["tree_lesson"].format(t=lesson_title(les, T), n=les["_total"]))
+            if les.get("_video") is not None:
+                lines.append(pre1 + br + T["tree_lesson_video"].format(t=lesson_title(les, T), n=les["_total"], v=les["_video"]))
+            else:
+                lines.append(pre1 + br + T["tree_lesson"].format(t=lesson_title(les, T), n=les["_total"]))
             pre2 = pre1 + ("    " if last_l else "|   ")
             items = overview_items(les)
             for ii, it in enumerate(items):
                 br = "`-- " if ii == len(items) - 1 else "|-- "
                 lines.append(f"{pre2}{br}{it}")
-    return [singular(x) for x in lines] if T is LABELS["en"] else lines
+    return [singular(x) for x in lines] if T["_lang"] == "en" else lines
 
 
 # --------------------------------------------------------------------------- neutral block model
@@ -363,6 +462,11 @@ def build_tree(prog, T):
 #         ("modhead", code_line, title, bold_part, rest) ("lesson", title, time)
 #         ("label", t) ("outline", [lines]) ("table", [h0, h1], rows, widths)
 def build_blocks(prog, T):
+    pad = T["_unit"] == "hours"
+
+    def f2(n, blank_zero=True):
+        return _f2(n, blank_zero, pad)
+
     B = []
     if prog.get("subtitle"):
         B.append(("pretitle", prog["subtitle"]))
@@ -385,7 +489,7 @@ def build_blocks(prog, T):
             B += [("p", f"+ {x}") for x in v]
 
     B.append(("h1", T["s3"], False))
-    B.append(("p", T["s3_1"].format(n=prog["_total"])))
+    B.append(("p", T["s3_1"].format(n=prog["_total"], h=approx_hours(prog["_total"]))))
     B.append(("p", "2. " + prog.get("time_unit_note", T["s3_2"])))
 
     B.append(("h1", T["s4"], True))
@@ -433,7 +537,7 @@ def build_blocks(prog, T):
         if m.get("lessons"):
             B.append(("h2", T["m3_2"]))
             for les in m["lessons"]:
-                B.append(("lesson", lesson_title(les, T), T["lesson_time"].format(n=f2(les["_total"], False))))
+                B.append(("lesson", lesson_title(les, T), lesson_time(les, T, f2(les["_total"], False))))
                 B.append(("label", T["obj"]))
                 B.append(("p", T["obj_lead"]))
                 B += [("p", x) for x in objective_lines(les.get("objectives"), T)]
@@ -713,15 +817,19 @@ def main():
     if lang not in LABELS:
         print(f"Unknown language '{lang}'. Available: {', '.join(LABELS)}. Falling back to 'en'.")
         lang = "en"
-    T = LABELS[lang]
+    unit = prog.get("time_unit", "hours")
+    if unit not in UNIT_KEYS:
+        print(f"ERROR: \"time_unit\" must be \"hours\" or \"minutes\", got {unit!r}.")
+        sys.exit(1)
+    T = labels_for(lang, unit)
     for key in ("program_title", "modules"):
         if not prog.get(key):
             print(f"ERROR: program.json has no '{key}'.")
             sys.exit(1)
     try:
-        compute(prog)
+        compute(prog, unit)
     except BuildError as e:
-        print("HOURS DO NOT ADD UP. No files written.\n" + str(e))
+        print(f"{unit.upper()} DO NOT ADD UP. No files written.\n" + str(e))
         sys.exit(1)
 
     blocks = build_blocks(prog, T)
@@ -738,11 +846,13 @@ def main():
         fn(p)
         print("Wrote", p)
 
-    print(f"\nTotal: {prog['_total']} hours (theory {prog['_theory']}, practice {prog['_practice']}, assessment {prog['_assess']})")
+    short = "h" if unit == "hours" else "min"
+    print(f"\nTotal: {prog['_total']} {unit} (theory {prog['_theory']}, practice {prog['_practice']}, assessment {prog['_assess']})")
     for m in prog["modules"]:
-        print(f"  {m['code']} {m['title']}: {m['_total']} h (theory {m['_theory']}, practice {m['_practice']}, "
-              f"assessment {m['_assess']}), {len(m.get('lessons', []))} lessons")
-    warns = lint(prog, lang)
+        vid = sum(les["_video"] or 0 for les in m.get("lessons", []))
+        print(f"  {m['code']} {m['title']}: {m['_total']} {short} (theory {m['_theory']}, practice {m['_practice']}, "
+              f"assessment {m['_assess']}), {len(m.get('lessons', []))} lessons" + (f", video {vid} min" if vid else ""))
+    warns = lint(prog, lang, unit)
     if warns:
         print(f"\n{len(warns)} warning(s) on learning objectives:")
         for w in warns:

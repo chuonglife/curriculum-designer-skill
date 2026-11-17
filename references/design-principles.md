@@ -88,6 +88,7 @@ Weak versus strong:
 - Lesson length: 2 to 16 hours. Two-hour lessons are usually overviews or procedures. Ten-to-sixteen-hour lessons are practice lessons that end in a product.
 - Live online sessions: keep one sitting to 90 to 120 minutes with a break, and at most 4 teaching hours a day. Count instructor presentation as theory. Count breakout work, role play, supervised practice on real tools and debriefs as practice. Put reading and recorded demos before the session as pre-work so live time goes to practice and feedback. State group size in the delivery conditions; 12 to 20 learners per facilitator is a workable range for skill practice.
 - Self-paced video courses: theory is video watching time; practice is following along and doing assignments, usually 1.5 to 3 times the video length; assessment is quizzes and submitted work. Program hours are learner hours, not video minutes.
+- Micro-courses (a few short videos, a total of learner time under about 8 hours): set `"time_unit": "minutes"` and count every time in whole minutes. Theory equals the video length of the lesson, practice is the pause tasks and the assignment (again 1.5 to 3 times the video), assessment is the quiz. Give every lesson `video_minutes`. The 2 to 16 hour lesson length and the 4 to 8 module count do not apply; 2 or more modules are enough, each still one usable competency.
 
 ## 8. Assessment
 

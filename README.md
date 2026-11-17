@@ -58,27 +58,65 @@ Program: PACKAGING AND PUBLISHING AN ONLINE COURSE ON UDEMY (45 hours)
 
 ## Install
 
-**Claude Code (personal, all projects)**
+You need git and Python 3.8 or later. Each step has a bash block (macOS, Linux, Git Bash on Windows) and a PowerShell block (Windows PowerShell 5.1 or PowerShell 7). Pick one shell and stay in it.
+
+**Step 1, option A. Claude Code, personal (all your projects)**
 
 ```bash
 git clone https://github.com/chuonglife/curriculum-designer-skill ~/.claude/skills/curriculum-designer
 ```
 
-**Claude Code (one project only)**
+```powershell
+git clone https://github.com/chuonglife/curriculum-designer-skill "$HOME\.claude\skills\curriculum-designer"
+```
+
+**Step 1, option B. Claude Code, one project only**
+
+Run this inside the project folder. The skill is then active only when Claude Code runs in that folder.
 
 ```bash
 git clone https://github.com/chuonglife/curriculum-designer-skill .claude/skills/curriculum-designer
 ```
 
+```powershell
+git clone https://github.com/chuonglife/curriculum-designer-skill ".claude\skills\curriculum-designer"
+```
+
+**Step 2. Install the Python dependency into a virtual environment**
+
+The only package is `python-docx`, listed in `requirements.txt`. A `.venv` folder inside your project keeps it away from your system Python. Run these in the project folder. When the skill finds a `.venv` there, it tells Claude to run the build script with that Python.
+
+After option A (personal):
+
+```bash
+python -m venv .venv
+.venv/bin/python -m pip install -r ~/.claude/skills/curriculum-designer/requirements.txt
+```
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r "$HOME\.claude\skills\curriculum-designer\requirements.txt"
+```
+
+After option B (one project):
+
+```bash
+python -m venv .venv
+.venv/bin/python -m pip install -r .claude/skills/curriculum-designer/requirements.txt
+```
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r ".claude\skills\curriculum-designer\requirements.txt"
+```
+
+In Git Bash on Windows the venv Python is `.venv/Scripts/python`, not `.venv/bin/python`. The PowerShell lines call the venv Python directly, so you do not need `Activate.ps1` or a change of execution policy. If you prefer no venv, `python -m pip install -r <skill folder>/requirements.txt` installs into your system Python.
+
+**Check it worked.** Start `claude` in the project folder and ask "Which skills do you have?". Curriculum Designer should be in the list. To update later, run `git pull` inside the skill folder.
+
 **Claude desktop or web app**
 
 Download `curriculum-designer.skill` from the [latest release](https://github.com/chuonglife/curriculum-designer-skill/releases/latest) and add it under Settings, Capabilities, Skills.
-
-**One dependency**
-
-```bash
-pip install python-docx
-```
 
 ## Use it
 
@@ -98,11 +136,18 @@ Here is my rough outline for a Udemy course on public speaking. Restructure it
 as a competency-based curriculum and export Word files.
 ```
 
+```
+Build a micro-course for teachers: 2 modules, 5 lessons, one 7-minute video
+per lesson with a quiz and a short task. Count time in minutes.
+```
+
 To change something afterwards, tell Claude what to change. It edits `program.json` and rebuilds, so the summary table and the module pages never disagree. You can also run the builder yourself:
 
 ```bash
 python scripts/build_docs.py programs/my-course/program.json
 ```
+
+Use `.venv/bin/python` (or `.venv\Scripts\python.exe` on Windows) instead of `python` if you installed into a venv.
 
 ## How the skill works
 
@@ -167,6 +212,10 @@ A plain prompt returns a list of topics. This skill returns a specification. Hou
 
 Yes. For self-paced video courses the skill counts theory as video watching time and practice as time spent following along and doing assignments, so total hours describe learner effort, not video length. The bundled example is a Udemy course.
 
+### Can it handle a short course of a few videos?
+
+Yes. Set `"time_unit": "minutes"` in `program.json` (Claude does this when you ask for a micro-course or give video lengths in minutes). Every time value is then in minutes, a program may have just 2 modules, and each lesson carries `video_minutes`, so anyone writing the lesson from `program.json`, person or skill, sees how long its video is. See [references/json-schema.md](references/json-schema.md).
+
 ### Does it work for corporate training and employee onboarding?
 
 Yes. Give it the role, the starting level of the new hires and the hours available. It was tested on a 24-hour customer support onboarding program.
@@ -185,7 +234,7 @@ The section order is fixed on purpose. Headings exist in English and Vietnamese.
 
 ### Do I need to know Python?
 
-No. Claude runs the script. You need Python 3.8 or later and `python-docx` installed.
+No. Claude runs the script. You need Python 3.8 or later and the packages in `requirements.txt` (only `python-docx`) installed, preferably in a project `.venv` as shown under [Install](#install).
 
 ### Is it free?
 
@@ -201,6 +250,8 @@ references/sample-module.md      one complete module for calibration
 references/overview-format.md    format of the overview tree
 templates/program.example.json   full data example
 scripts/build_docs.py            JSON to .docx and .md
+requirements.txt                 Python dependency (python-docx)
+CHANGELOG.md                     release notes
 examples/                        generated sample output
 ```
 

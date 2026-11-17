@@ -2,15 +2,17 @@
 
 `OBJ` below means an objective block with three keys: `knowledge`, `skills`, `autonomy` (printed as "Autonomy and responsibility"). Each key takes **one string or a list of strings**. One string prints inline. A list prints as sub-items.
 
-All hours are **whole numbers**. The script rejects fractions. If a module needs half an hour of assessment, fold it into a lesson's practice time or round the module to full hours.
+All time values are **whole numbers** in the unit set by `time_unit`: hours by default, minutes for a micro-course. The script rejects fractions. If a module needs half an hour of assessment, fold it into a lesson's practice time or round the module to full hours, or switch the program to minutes.
 
 ```
 language                 "en" | "vi"                 heading language, default "en"
+time_unit                "hours" | "minutes"         default "hours"; see "Micro-courses" below
 slug                     string                      folder name, informational
 subtitle                 string, may be ""           line printed above the title
 program_title            string   REQUIRED           printed as given, usually capitals
 basis_note               string, may be ""           italic line under the title
 total_hours              integer, optional           cross-check only; build fails on mismatch
+                                                     (total_minutes in minutes mode)
 target_learners          string | [string]           section I, one paragraph each
 general_objective        string | [string]           section II.1
 specific_objectives      OBJ                         section II.2, always printed as lists
@@ -23,12 +25,12 @@ module:
   code                   string   e.g. "M01"
   title                  string
   required               boolean, default true       false puts the module in group B (electives)
-  total_hours            integer, optional           cross-check only
+  total_hours            integer, optional           cross-check only (total_minutes in minutes mode)
   position               string                      section 1
   nature                 string                      section 1
   objectives             OBJ                         section 2
   lessons                [lesson], may be []
-  exam_hours             integer, default 0          the "Module assessment" row
+  exam_hours             integer, default 0          the "Module assessment" row (exam_minutes in minutes mode)
   conditions             { learning_space, equipment, materials, other_resources }   strings, section 4
   assessment             { content: OBJ, method: string }                              section 5
   guidelines             { scope, instructor, learners: strings; key_points: [string] } section 6
@@ -36,9 +38,12 @@ module:
 
 lesson:
   title                  string                      "Lesson n:" is added automatically
-  theory                 integer hours
-  practice               integer hours
-  assessment             integer hours, usually 0    only for a test inside the lesson
+  theory                 integer, in time_unit
+  practice               integer, in time_unit
+  assessment             integer, in time_unit       usually 0 in hours mode; the quiz in minutes mode
+  video_minutes          integer, optional           length of the lesson's video(s) in minutes, in either
+                                                     mode; printed after the lesson time; the field a
+                                                     lesson writer reads for the video length
   objectives             OBJ
   content                [string]                    outline lines: "1. ...", "1.1. ...", "2. ..."
   overview               [string], optional          topics shown in the overview tree; when absent the
@@ -54,3 +59,30 @@ section (implementation_guidelines):
 A section with no items and no nested sections is not printed, so leave out parts that do not apply (for example credit transfer).
 
 Keys that start with `_` are ignored. Use them for notes to yourself.
+
+## Micro-courses: `"time_unit": "minutes"`
+
+Use it when the course is a handful of short videos and whole hours would distort it (a 35-minute course printed as "5 hours"). Everything else in the file stays the same.
+
+- `theory`, `practice`, `assessment` of each lesson are whole minutes of learner time. Theory is the video watching time, practice the pause tasks, exercises and assignment, assessment the quiz.
+- `video_minutes` on every lesson. The build warns when it is missing or larger than the lesson's theory minutes.
+- The module keys become `exam_minutes` and `total_minutes`; the program key becomes `total_minutes`. An hours key in minutes mode (or the reverse) stops the build, so a number is never read in the wrong unit.
+- Tables print "Time (minutes)", lesson headings print "Time: 27 minutes, of which video: 7 minutes", and section III states the total in minutes with the hour equivalent. `time_unit_note` still overrides the time-unit sentence if you need your own wording.
+
+```json
+{
+  "language": "en",
+  "time_unit": "minutes",
+  "total_minutes": 135,
+  "modules": [
+    {
+      "code": "M01",
+      "exam_minutes": 0,
+      "lessons": [
+        { "title": "Vague versus measurable objectives",
+          "video_minutes": 7, "theory": 7, "practice": 15, "assessment": 5 }
+      ]
+    }
+  ]
+}
+```
