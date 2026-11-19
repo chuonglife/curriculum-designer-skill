@@ -19,6 +19,8 @@ Everything goes in `programs/<slug>/` in the user's working folder:
 | `01_Training_Program.docx` + `.md` | Full program document: sections I to VI, each module with its 7 fixed sections |
 | `00_Program_Overview.docx` + `.md` | One-page tree: program, modules, lessons, topics, with hours |
 
+With `"language": "vi"` the files are named `01_Chuong_trinh_dao_tao` and `00_Tong_quan_chuong_trinh`.
+
 You write the JSON. `scripts/build_docs.py` does the arithmetic, the tables and the formatting, so the numbers cannot drift between the summary table and the module pages.
 
 ## Workflow
@@ -83,13 +85,15 @@ Then section VI for the whole program: admission, delivery, assessment and certi
 
 ### Step 5. Write `program.json` and build
 
-Read `references/json-schema.md` for the compact list of keys, then use `templates/program.example.json` as the worked example (it is long; read one module of it, not all eight). Keep every key present and use an empty list or empty string where something does not apply. Time values are whole numbers in the program's `time_unit` (hours unless it is a micro-course). An objective group accepts either one string or a list of strings. Set `"language": "en"` (or `"vi"` for Vietnamese headings). Then run:
+Read `references/json-schema.md` for the compact list of keys, then use `templates/program.example.json` as the worked example (it is long; read one module of it, not all eight). Keep every key present and use an empty list or empty string where something does not apply. Time values are whole numbers in the program's `time_unit` (hours unless it is a micro-course). An objective group accepts either one string or a list of strings. Set `"language": "en"` (or `"vi"` for Vietnamese headings). Leave `basis_note` empty unless the user's program has its own legal or institutional basis; do not copy the one in the example.
+
+**Which Python, before you run anything.** Look for a `.venv` folder in the user's project folder first. If it is there, `<python>` below is `.venv/Scripts/python` on Windows and `.venv/bin/python` on macOS and Linux. Only when there is no `.venv` is it `python` (or `python3` where `python` is missing). Then run:
 
 ```bash
-python <skill-folder>/scripts/build_docs.py programs/<slug>/program.json
+<python> <skill-folder>/scripts/build_docs.py programs/<slug>/program.json
 ```
 
-**Which Python.** If the user's project folder has a `.venv`, run the script with that interpreter: `.venv/Scripts/python` on Windows, `.venv/bin/python` on macOS and Linux. Otherwise use `python` (or `python3` where `python` is missing). The script needs `python-docx`; if it is missing, install `<skill-folder>/requirements.txt` into the same interpreter with `<that python> -m pip install -r <skill-folder>/requirements.txt`.
+The script needs `python-docx`. If it stops with "python-docx is not installed for this Python", it prints the install command for that interpreter: run it when that interpreter is the project's `.venv`. If it is the system Python, create the `.venv` first (`python -m venv .venv` in the project folder, `python3` on macOS and Linux), install `<skill-folder>/requirements.txt` into it and rerun with it. Do not install into the system Python without asking the user. If the script stops with "PROGRAM.JSON IS NOT VALID" or "TIME VALUES ARE NOT VALID", each line names the module and lesson to fix.
 
 The script sums the time values from lessons up to the program, builds all tables, and stops without writing anything if a declared total disagrees with the computed total. It then prints objective warnings. Fix the JSON and rerun until the totals add up and the warnings are either gone or deliberately accepted.
 

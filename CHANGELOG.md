@@ -1,5 +1,34 @@
 # Changelog
 
+## v1.1.1 - 2026-11-19
+
+Fixes from an audit as a new user on a clean machine: fresh clone, fresh venv, every README command run as written.
+
+### Fixed
+
+- README: the "run the builder yourself" command pointed at `scripts/build_docs.py`, a path that exists in no folder the user is in. It now gives the full path from the project folder, in bash and PowerShell.
+- README: the bash blocks used `python`, which current macOS, Debian and Ubuntu do not have. They use `python3` now, with the Git Bash, `python3-venv` and `externally-managed-environment` cases spelled out.
+- README: the Claude app install named a menu path that no longer exists and left out that code execution must be on.
+- `build_docs.py`: a missing `python-docx` printed a traceback. It now names the Python it ran in and the exact install command, and `--help` works before anything is installed.
+- `build_docs.py`: a `program.json` saved with a UTF-8 byte order mark (Windows PowerShell 5.1, Notepad) crashed. It is read normally.
+- `build_docs.py`: a module without `code` or `title`, a lesson without `title`, `null` where an object belongs, a total that is not a number, `modules` that is not a list, invalid JSON and a wrong file path all gave a Python traceback. Each now stops the build with one line that names the module and lesson, and nothing is written.
+- SKILL.md: Claude ran the build with the system `python` even when the project had a `.venv`, because the command block came before the rule. The rule now comes first and the block says `<python>`.
+- Objective lint: "Understands ...", "To understand ..." and "Understand: ..." were not flagged.
+
+### Added
+
+- README: a "Before you start" table (Claude Code, git, Python, with download links and check commands), a build-script check after install, a note for projects that are git repositories, and two FAQ entries (Vietnamese file names, Word headings).
+- `references/json-schema.md`: module `code`, module `title` and lesson `title` marked REQUIRED; the lesson `total` cross-check documented; the micro-course sample labelled as a fragment.
+- SKILL.md: leave `basis_note` empty unless the program has its own basis.
+
+### Changed
+
+- The error banner reads "TIME VALUES ARE NOT VALID" (it also covers fractions and non-numbers), the build summary says "1 lesson", and the warnings header no longer says "on learning objectives" for video and practice warnings.
+
+### Unchanged
+
+- The Markdown and Word text output of `templates/program.example.json` and both examples is identical to v1.1.0.
+
 ## v1.1.0 - 2026-11-17
 
 Fixes from a trial run as a new user on Windows 11 (Git Bash and PowerShell, Python 3.12, venv).

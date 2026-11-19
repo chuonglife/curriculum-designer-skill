@@ -40,7 +40,7 @@ V. DETAILED SYLLABUS
 
     MODULE M01
     MODULE TITLE IN CAPITALS
-    Duration: 40 hours (Theory: 20 hours; Practice, discussion: 18 hours; Assessment: 02 hours)
+    Duration: 40 hours (Theory: 20 hours; Practice, discussion: 18 hours; Assessment: 2 hours)
 
     1. POSITION AND NATURE OF THE MODULE
         - Position: where the module sits in the program, what comes before it.

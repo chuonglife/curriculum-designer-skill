@@ -58,7 +58,17 @@ Program: PACKAGING AND PUBLISHING AN ONLINE COURSE ON UDEMY (45 hours)
 
 ## Install
 
-You need git and Python 3.8 or later. Each step has a bash block (macOS, Linux, Git Bash on Windows) and a PowerShell block (Windows PowerShell 5.1 or PowerShell 7). Pick one shell and stay in it.
+**Before you start** you need three things:
+
+| Tool | Get it | Check it |
+|---|---|---|
+| Claude Code | [Install guide](https://code.claude.com/docs/en/setup) | `claude --version` |
+| git | [git-scm.com/downloads](https://git-scm.com/downloads) | `git --version` |
+| Python 3.8 or later | [python.org/downloads](https://www.python.org/downloads/). On Windows tick "Add python.exe to PATH" in the installer | `python --version` (macOS, Linux: `python3 --version`) |
+
+No git? Download the ZIP from the green Code button on GitHub and unzip it so that `SKILL.md` sits directly in the `curriculum-designer` folder named in step 1.
+
+Each step has a bash block (macOS, Linux) and a PowerShell block (Windows PowerShell 5.1 or PowerShell 7). Pick one shell and stay in it. Git Bash on Windows: take the bash blocks, but type `python` for `python3` and `.venv/Scripts/python` for `.venv/bin/python`.
 
 **Step 1, option A. Claude Code, personal (all your projects)**
 
@@ -72,7 +82,7 @@ git clone https://github.com/chuonglife/curriculum-designer-skill "$HOME\.claude
 
 **Step 1, option B. Claude Code, one project only**
 
-Run this inside the project folder. The skill is then active only when Claude Code runs in that folder.
+Run this inside the project folder. The skill is then active only when Claude Code runs in that folder. If the project is itself a git repository, add `.claude/skills/curriculum-designer/` to its `.gitignore`, or git will warn about a repository inside a repository.
 
 ```bash
 git clone https://github.com/chuonglife/curriculum-designer-skill .claude/skills/curriculum-designer
@@ -89,7 +99,7 @@ The only package is `python-docx`, listed in `requirements.txt`. A `.venv` folde
 After option A (personal):
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 .venv/bin/python -m pip install -r ~/.claude/skills/curriculum-designer/requirements.txt
 ```
 
@@ -101,7 +111,7 @@ python -m venv .venv
 After option B (one project):
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 .venv/bin/python -m pip install -r .claude/skills/curriculum-designer/requirements.txt
 ```
 
@@ -110,13 +120,31 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r ".claude\skills\curriculum-designer\requirements.txt"
 ```
 
-In Git Bash on Windows the venv Python is `.venv/Scripts/python`, not `.venv/bin/python`. The PowerShell lines call the venv Python directly, so you do not need `Activate.ps1` or a change of execution policy. If you prefer no venv, `python -m pip install -r <skill folder>/requirements.txt` installs into your system Python.
+The PowerShell lines call the venv Python directly, so you do not need `Activate.ps1` or a change of execution policy. On Debian and Ubuntu, `python3 -m venv` needs one package first: `sudo apt install python3-venv`. If you prefer no venv, `python -m pip install -r <skill folder>/requirements.txt` installs into your system Python; recent Debian, Ubuntu and Homebrew Pythons refuse that with `externally-managed-environment`, and then the `.venv` is the way.
 
-**Check it worked.** Start `claude` in the project folder and ask "Which skills do you have?". Curriculum Designer should be in the list. To update later, run `git pull` inside the skill folder.
+**Check it worked.** Two checks, both from the project folder.
+
+The build script answers (it prints its usage text):
+
+```bash
+.venv/bin/python .claude/skills/curriculum-designer/scripts/build_docs.py --help
+```
+
+```powershell
+.\.venv\Scripts\python.exe ".claude\skills\curriculum-designer\scripts\build_docs.py" --help
+```
+
+After a personal install the script is at `~/.claude/skills/curriculum-designer/scripts/build_docs.py` (`$HOME\.claude\skills\...` in PowerShell).
+
+Claude sees the skill: start `claude` in the project folder and type `/skills`, or ask "Which skills do you have?". `curriculum-designer` should be in the list. If it is not, quit `claude` and start it again. To update later, run `git pull` inside the skill folder.
 
 **Claude desktop or web app**
 
-Download `curriculum-designer.skill` from the [latest release](https://github.com/chuonglife/curriculum-designer-skill/releases/latest) and add it under Settings, Capabilities, Skills.
+1. In Settings, Capabilities, turn on "Code execution and file creation". The skill runs a Python script, so it needs it. On Team and Enterprise plans an owner may have to allow skills first.
+2. Download `curriculum-designer.skill` from the [latest release](https://github.com/chuonglife/curriculum-designer-skill/releases/latest).
+3. Open Customize, Skills, press "+", choose "Create skill", then "Upload a skill", and pick the file.
+
+Menu names in the app change now and then. If yours differ, see [Using Skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude).
 
 ## Use it
 
@@ -144,10 +172,14 @@ per lesson with a quiz and a short task. Count time in minutes.
 To change something afterwards, tell Claude what to change. It edits `program.json` and rebuilds, so the summary table and the module pages never disagree. You can also run the builder yourself:
 
 ```bash
-python scripts/build_docs.py programs/my-course/program.json
+.venv/bin/python .claude/skills/curriculum-designer/scripts/build_docs.py programs/my-course/program.json
 ```
 
-Use `.venv/bin/python` (or `.venv\Scripts\python.exe` on Windows) instead of `python` if you installed into a venv.
+```powershell
+.\.venv\Scripts\python.exe ".claude\skills\curriculum-designer\scripts\build_docs.py" "programs\my-course\program.json"
+```
+
+Both lines run from the project folder after a one-project install. After a personal install the script is under `~/.claude/skills/curriculum-designer/scripts/`. Without a venv, start the line with `python` (or `python3`). A mistake in `program.json` (a missing title, a total that does not add up, a comma too many) stops the build with a message that names the module and lesson, and nothing is written.
 
 ## How the skill works
 
@@ -230,7 +262,11 @@ DACUM (Developing A Curriculum) is an occupational analysis method from Canada, 
 
 ### Can I change the document template or the language?
 
-The section order is fixed on purpose. Headings exist in English and Vietnamese. Set `"language": "en"` or `"vi"` in `program.json`. To add a language, add one block to the `LABELS` dictionary in `scripts/build_docs.py`.
+The section order is fixed on purpose. Headings exist in English and Vietnamese. Set `"language": "en"` or `"vi"` in `program.json`. With `"vi"` the four files get Vietnamese names too: `01_Chuong_trinh_dao_tao` and `00_Tong_quan_chuong_trinh`. Any other language code builds in English and says so on the console. To add a language, add one block to the `LABELS` dictionary in `scripts/build_docs.py`.
+
+### Why does Word show no navigation pane or table of contents?
+
+The Word file uses bold paragraphs in the body style, not Word's Heading styles, so that it prints the same on any machine. For a clickable outline, take the `.md` file, or apply Heading styles to the section titles in Word.
 
 ### Do I need to know Python?
 
@@ -248,6 +284,7 @@ references/design-principles.md  process, objective formula, verb tables, checkl
 references/program-framework.md  the fixed document frame
 references/sample-module.md      one complete module for calibration
 references/overview-format.md    format of the overview tree
+references/json-schema.md        every key of program.json on one page
 templates/program.example.json   full data example
 scripts/build_docs.py            JSON to .docx and .md
 requirements.txt                 Python dependency (python-docx)

@@ -22,8 +22,8 @@ modules                  [module]  REQUIRED
 implementation_guidelines [section]                  section VI
 
 module:
-  code                   string   e.g. "M01"
-  title                  string
+  code                   string   REQUIRED           e.g. "M01"
+  title                  string   REQUIRED
   required               boolean, default true       false puts the module in group B (electives)
   total_hours            integer, optional           cross-check only (total_minutes in minutes mode)
   position               string                      section 1
@@ -37,7 +37,10 @@ module:
   references             [string], may be []         section 7, numbered automatically
 
 lesson:
-  title                  string                      "Lesson n:" is added automatically
+  title                  string   REQUIRED           "Lesson n:" is added automatically, unless the
+                                                     title already starts with "Lesson n:" or "Unit n:"
+  total                  integer, optional           cross-check only; build fails when it differs from
+                                                     theory + practice + assessment
   theory                 integer, in time_unit
   practice               integer, in time_unit
   assessment             integer, in time_unit       usually 0 in hours mode; the quiz in minutes mode
@@ -48,13 +51,16 @@ lesson:
   content                [string]                    outline lines: "1. ...", "1.1. ...", "2. ..."
   overview               [string], optional          topics shown in the overview tree; when absent the
                                                      tree uses the top-level content lines, skipping
-                                                     lines that start with Practice or Discussion
+                                                     lines that start with Practice, Exercise or
+                                                     Discussion
 
 section (implementation_guidelines):
   heading                string
   items                  [string]                    printed as dash items
   sections               [section], optional         nested one level: "1.1. Admission" and so on
 ```
+
+A missing REQUIRED key, a `modules` or `lessons` value that is not a list, or a file that is not valid JSON stops the build with a message that names the place; nothing is written. A file saved with a UTF-8 byte order mark (Windows PowerShell 5.1 and Notepad do that) is read normally.
 
 A section with no items and no nested sections is not printed, so leave out parts that do not apply (for example credit transfer).
 
@@ -68,6 +74,8 @@ Use it when the course is a handful of short videos and whole hours would distor
 - `video_minutes` on every lesson. The build warns when it is missing or larger than the lesson's theory minutes.
 - The module keys become `exam_minutes` and `total_minutes`; the program key becomes `total_minutes`. An hours key in minutes mode (or the reverse) stops the build, so a number is never read in the wrong unit.
 - Tables print "Time (minutes)", lesson headings print "Time: 27 minutes, of which video: 7 minutes", and section III states the total in minutes with the hour equivalent. `time_unit_note` still overrides the time-unit sentence if you need your own wording.
+
+A fragment that shows only the keys that change (it will not build on its own; `program_title`, module titles and the rest are left out):
 
 ```json
 {

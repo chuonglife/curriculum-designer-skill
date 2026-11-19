@@ -22,7 +22,7 @@ time-allocation table itself, and refuses to write files when a declared total
 does not match the computed one. It also lints learning objectives and prints
 warnings (missing objective group, unmeasurable opening verb).
 
-Requires: python-docx  (pip install python-docx)
+Requires: python-docx  (pip install -r requirements.txt, into the project's .venv when there is one)
 """
 import io
 import json
@@ -30,13 +30,28 @@ import os
 import re
 import sys
 
-from docx import Document
-from docx.enum.section import WD_ORIENT
-from docx.enum.table import WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml import OxmlElement
-from docx.oxml.ns import qn
-from docx.shared import Cm, Inches, Pt
+if len(sys.argv) < 2 or sys.argv[1] in ("-h", "--help"):
+    # Help works even before python-docx is installed.
+    print(__doc__)
+    sys.exit(0 if len(sys.argv) > 1 else 2)
+
+try:
+    from docx import Document
+    from docx.enum.section import WD_ORIENT
+    from docx.enum.table import WD_TABLE_ALIGNMENT
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    from docx.shared import Cm, Inches, Pt
+except ImportError:
+    _req = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "requirements.txt")
+    sys.exit(
+        "ERROR: python-docx is not installed for this Python:\n"
+        f"  {sys.executable}\n"
+        "If the project has a .venv, rerun this script with .venv/Scripts/python (Windows)\n"
+        "or .venv/bin/python (macOS, Linux). Otherwise install it into this Python:\n"
+        f'  "{sys.executable}" -m pip install -r "{_req}"'
+    )
 
 if hasattr(sys.stdout, "buffer"):
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -270,6 +285,42 @@ def hours(v, where, errors, unit="hours"):
     return int(f)
 
 
+def validate(prog):
+    """Shape errors that would otherwise surface as a traceback. Returns a list of messages."""
+    errs = []
+    if not isinstance(prog, dict):
+        return ["program.json must be a JSON object ({ ... }) at the top level"]
+    mods = prog.get("modules")
+    if mods is not None and not isinstance(mods, list):
+        return ["'modules' must be a list ([ ... ]) of module objects"]
+    so = prog.get("specific_objectives")
+    if so is not None and not isinstance(so, dict):
+        errs.append("Program: 'specific_objectives' must be an object with knowledge, skills, autonomy")
+    for n, m in enumerate(mods or [], 1):
+        if not isinstance(m, dict):
+            errs.append(f"Module {n}: must be an object ({{ ... }}), got {type(m).__name__}")
+            continue
+        w = str(m.get("code") or f"Module {n}")
+        for key in ("code", "title"):
+            if not m.get(key):
+                errs.append(f"{w}: module has no '{key}'")
+        les_list = m.get("lessons")
+        if les_list is None:
+            m["lessons"] = []
+        if les_list is not None and not isinstance(les_list, list):
+            errs.append(f"{w}: 'lessons' must be a list ([ ... ])")
+            continue
+        for i, les in enumerate(les_list or [], 1):
+            if not isinstance(les, dict):
+                errs.append(f"{w} lesson {i}: must be an object ({{ ... }})")
+            elif not les.get("title"):
+                errs.append(f"{w} lesson {i}: lesson has no 'title'")
+        for key in ("conditions", "assessment", "guidelines"):
+            if m.get(key) is not None and not isinstance(m[key], dict):
+                errs.append(f"{w}: '{key}' must be an object ({{ ... }})")
+    return errs
+
+
 def compute(prog, unit="hours"):
     """Attach _theory/_practice/_assess/_total to lessons, modules and program."""
     errors = []
@@ -296,7 +347,7 @@ def compute(prog, unit="hours"):
             les["_video"] = None
             if les.get("video_minutes") not in (None, ""):
                 les["_video"] = hours(les["video_minutes"], f"{w} video_minutes", errors, "minutes")
-            if "total" in les and int(les["total"]) != les["_total"]:
+            if les.get("total") not in (None, "") and hours(les["total"], f"{w} total", errors, unit) != les["_total"]:
                 errors.append(f"{m.get('code')} lesson {i}: declared total {les['total']} but theory+practice+assessment = {les['_total']}")
             mt[0] += a
             mt[1] += b
@@ -307,14 +358,14 @@ def compute(prog, unit="hours"):
         m["_theory"], m["_practice"], m["_assess"] = mt
         m["_total"] = sum(mt)
         tk = keys["total"]
-        if tk in m and int(m[tk]) != m["_total"]:
+        if m.get(tk) not in (None, "") and hours(m[tk], f"{m.get('code')} {tk}", errors, unit) != m["_total"]:
             errors.append(f"{m.get('code')}: declared {tk} {m[tk]} but lessons + exam add up to {m['_total']}")
         for k in range(3):
             p[k] += mt[k]
     prog["_theory"], prog["_practice"], prog["_assess"] = p
     prog["_total"] = sum(p)
     tk = keys["total"]
-    if tk in prog and int(prog[tk]) != prog["_total"]:
+    if prog.get(tk) not in (None, "") and hours(prog[tk], f"Program {tk}", errors, unit) != prog["_total"]:
         errors.append(f"Program: declared {tk} {prog[tk]} but modules add up to {prog['_total']}")
 
     def grp(flag):
@@ -340,8 +391,11 @@ def lint(prog, lang, unit="hours"):
                 warns.append(f"{where}: no '{g}' objective")
             for s in items:
                 low = s.strip().lower()
+                if low.startswith("to "):
+                    low = low[3:].lstrip()
                 for w in weak:
-                    if low.startswith(w + " ") or low.startswith(w + ","):
+                    # "understand", "understands", then a space, comma, colon or the end
+                    if re.match(re.escape(w) + "s?(?![a-z])", low):
                         warns.append(f"{where}: objective starts with unmeasurable verb '{w}': {s[:70]}")
                         break
 
@@ -481,7 +535,7 @@ def build_blocks(prog, T):
     B.append(("h2", T["s2_1"]))
     B += [("p", x) for x in as_list(prog.get("general_objective"))]
     B.append(("h2", T["s2_2"]))
-    so = prog.get("specific_objectives", {})
+    so = prog.get("specific_objectives") or {}
     for g in GROUPS:
         v = as_list(so.get(g))
         if v:
@@ -544,20 +598,20 @@ def build_blocks(prog, T):
                 B.append(("label", T["content"]))
                 B.append(("outline", as_list(les.get("content"))))
 
-        c = m.get("conditions", {})
+        c = m.get("conditions") or {}
         B.append(("h3", T["m4"]))
         B.append(("p", f"{T['m4_1']}: {c.get('learning_space', '')}"))
         B.append(("p", f"{T['m4_2']}: {c.get('equipment', '')}"))
         B.append(("p", f"{T['m4_3']}: {c.get('materials', '')}"))
         B.append(("p", f"{T['m4_4']}: {c.get('other_resources', '')}"))
 
-        a = m.get("assessment", {})
+        a = m.get("assessment") or {}
         B.append(("h3", T["m5"]))
         B.append(("p", T["m5_1"]))
         B += [("p", x) for x in objective_lines(a.get("content"), T)]
         B.append(("p", f"{T['m5_2']}: {a.get('method', '')}"))
 
-        g = m.get("guidelines", {})
+        g = m.get("guidelines") or {}
         B.append(("h3", T["m6"]))
         B.append(("p", f"{T['m6_1']}: {g.get('scope', '')}"))
         B.append(("p", T["m6_2"]))
@@ -810,9 +864,21 @@ def main():
         sys.exit(0 if len(sys.argv) > 1 else 2)
     src = sys.argv[1]
     outdir = sys.argv[2] if len(sys.argv) > 2 else os.path.dirname(os.path.abspath(src))
+    try:
+        # utf-8-sig: Windows PowerShell 5.1 and Notepad save UTF-8 with a BOM
+        with open(src, encoding="utf-8-sig") as f:
+            prog = json.load(f)
+    except FileNotFoundError:
+        print(f"ERROR: file not found: {src}\nGive the path to program.json, for example programs/my-course/program.json")
+        sys.exit(1)
+    except json.JSONDecodeError as e:
+        print(f"ERROR: {src} is not valid JSON: {e}\nFix the file at that line (a missing comma or quote is the usual cause) and rerun.")
+        sys.exit(1)
+    shape = validate(prog)
+    if shape:
+        print("PROGRAM.JSON IS NOT VALID. No files written.\n" + "\n".join(shape))
+        sys.exit(1)
     os.makedirs(outdir, exist_ok=True)
-    with open(src, encoding="utf-8") as f:
-        prog = json.load(f)
     lang = prog.get("language", "en")
     if lang not in LABELS:
         print(f"Unknown language '{lang}'. Available: {', '.join(LABELS)}. Falling back to 'en'.")
@@ -829,7 +895,7 @@ def main():
     try:
         compute(prog, unit)
     except BuildError as e:
-        print(f"{unit.upper()} DO NOT ADD UP. No files written.\n" + str(e))
+        print(f"TIME VALUES ARE NOT VALID ({unit} do not add up or are not whole numbers). No files written.\n" + str(e))
         sys.exit(1)
 
     blocks = build_blocks(prog, T)
@@ -851,10 +917,10 @@ def main():
     for m in prog["modules"]:
         vid = sum(les["_video"] or 0 for les in m.get("lessons", []))
         print(f"  {m['code']} {m['title']}: {m['_total']} {short} (theory {m['_theory']}, practice {m['_practice']}, "
-              f"assessment {m['_assess']}), {len(m.get('lessons', []))} lessons" + (f", video {vid} min" if vid else ""))
+              f"assessment {m['_assess']}), {len(m.get('lessons') or [])} lesson{'' if len(m.get('lessons') or []) == 1 else 's'}" + (f", video {vid} min" if vid else ""))
     warns = lint(prog, lang, unit)
     if warns:
-        print(f"\n{len(warns)} warning(s) on learning objectives:")
+        print(f"\n{len(warns)} warning(s):")
         for w in warns:
             print("  - " + w)
     else:
