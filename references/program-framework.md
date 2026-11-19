@@ -1,12 +1,12 @@
 # Program document framework
 
-Source structure: Appendix I, Circular 06/2022/TT-BLDTBXH (Vietnam, Ministry of Labour, Invalids and Social Affairs), the national pedagogical training program for vocational teachers. Headings are translated. The order and the numbering are kept.
+This is the skill's fixed competency-based training (CBT) program frame. The order and the numbering are fixed.
 
 `build_docs.py` produces exactly this order from `program.json`. Text in parentheses is guidance and does not appear in the output.
 
 ```
 PROGRAM TITLE (bold, centered)
-(optional note in italics: legal basis, version, issuing body)
+(optional note in italics: version, issuing body, or a basis the user names)
 
 I. TARGET LEARNERS
     One or two paragraphs: who should take this, entry requirements.
@@ -111,6 +111,6 @@ VI. PROGRAM IMPLEMENTATION GUIDELINES
 - Module codes: `M01`, `M02`, and so on. Electives continue the numbering.
 - Hours in tables print with two digits (`02`, `09`, `40`). Zero prints as an empty cell.
 - The "Module assessment" row comes from `exam_hours`. Use a lesson's own `assessment` hours only when a test sits inside that lesson.
-- Section 5.2 in the source standard reads: "Learning results are assessed through an end-of-module test in one of these forms: essay, oral exam, objective test, reflective report." Adapt the forms to the delivery mode: quiz, submitted assignment, product scored with a rubric, skill demonstration.
-- The source standard's default rules for section VI 1.3, useful as a starting point: learners sit the module assessment after attending at least 80% of hours and completing the assigned work; scoring is on a 10-point scale; below 5.0 the module is retaken; overall grades are Excellent 9.0 to 10, Very good 8.0 to under 9.0, Good 7.0 to under 8.0, Pass 5.0 to under 7.0. Replace these with the user's institution rules when known.
+- A default wording for section 5.2: "Learning results are assessed through an end-of-module test in one of these forms: essay, oral exam, objective test, reflective report." Adapt the forms to the delivery mode: quiz, submitted assignment, product scored with a rubric, skill demonstration.
+- Default rules for section VI 1.3, useful as a starting point: learners sit the module assessment after attending at least 80% of hours and completing the assigned work; scoring is on a 10-point scale; below 5.0 the module is retaken; overall grades are Excellent 9.0 to 10, Very good 8.0 to under 9.0, Good 7.0 to under 8.0, Pass 5.0 to under 7.0. Replace these with the user's institution rules when known.
 - A module may have no lessons (for example a final capstone assessed by rubric). It then shows as a single line in the overview tree.

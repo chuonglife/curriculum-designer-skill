@@ -7,7 +7,7 @@ description: Design a complete competency-based training program or course curri
 
 Turn a course idea into a complete, defensible training program: who it is for, what learners can do at the end, which modules and lessons get them there, how many hours each takes, how each is assessed. The method is competency-based training (CBT): every module produces one usable competency, and every objective is something an assessor could watch a learner do.
 
-The document structure follows a real national standard for vocational teacher training (Appendix I of Circular 06/2022/TT-BLDTBXH, Vietnam). It is used here because it is strict in the right places. It forces objectives, content, hours, delivery conditions and assessment to line up at program, module and lesson level, so gaps show immediately.
+The document uses this skill's fixed CBT program frame. It is strict in the right places. It forces objectives, content, hours, delivery conditions and assessment to line up at program, module and lesson level, so gaps show immediately.
 
 ## What you produce
 
@@ -18,8 +18,6 @@ Everything goes in `programs/<slug>/` in the user's working folder:
 | `program.json` | The single source of truth. Edit this, rerun the script. |
 | `01_Training_Program.docx` + `.md` | Full program document: sections I to VI, each module with its 7 fixed sections |
 | `00_Program_Overview.docx` + `.md` | One-page tree: program, modules, lessons, topics, with hours |
-
-With `"language": "vi"` the files are named `01_Chuong_trinh_dao_tao` and `00_Tong_quan_chuong_trinh`.
 
 You write the JSON. `scripts/build_docs.py` does the arithmetic, the tables and the formatting, so the numbers cannot drift between the summary table and the module pages.
 
@@ -70,7 +68,7 @@ Pick verbs from the tables in the principles file. Do not open an objective with
 
 ### Step 3. Write lesson content
 
-Number the outline as `1.`, `1.1.`, `1.2.`, `2.` and so on, one string per line in the `content` array. The last top-level item of a skill lesson is normally a practice or discussion item that names what learners actually do. Read `references/sample-module.md` to calibrate density and tone. It is a real module from the source standard.
+Number the outline as `1.`, `1.1.`, `1.2.`, `2.` and so on, one string per line in the `content` array. The last top-level item of a skill lesson is normally a practice or discussion item that names what learners actually do. Read `references/sample-module.md` to calibrate density and tone. It is a complete module written in this frame.
 
 ### Step 4. Fill the remaining module sections
 
@@ -85,7 +83,7 @@ Then section VI for the whole program: admission, delivery, assessment and certi
 
 ### Step 5. Write `program.json` and build
 
-Read `references/json-schema.md` for the compact list of keys, then use `templates/program.example.json` as the worked example (it is long; read one module of it, not all eight). Keep every key present and use an empty list or empty string where something does not apply. Time values are whole numbers in the program's `time_unit` (hours unless it is a micro-course). An objective group accepts either one string or a list of strings. Set `"language": "en"` (or `"vi"` for Vietnamese headings). Leave `basis_note` empty unless the user's program has its own legal or institutional basis; do not copy the one in the example.
+Read `references/json-schema.md` for the compact list of keys, then use `templates/program.example.json` as the worked example (it is long; read one module of it, not all eight). Keep every key present and use an empty list or empty string where something does not apply. Time values are whole numbers in the program's `time_unit` (hours unless it is a micro-course). An objective group accepts either one string or a list of strings. Set `"language": "en"` (the only language that ships). Leave `basis_note` empty. Never cite a national regulation, law or standard in `basis_note` unless the user names one for their own program; then cite only what they named.
 
 **Which Python, before you run anything.** Look for a `.venv` folder in the user's project folder first. If it is there, `<python>` below is `.venv/Scripts/python` on Windows and `.venv/bin/python` on macOS and Linux. Only when there is no `.venv` is it `python` (or `python3` where `python` is missing). Then run:
 
@@ -121,7 +119,7 @@ Report to the user: the four file paths, the module table with hours, the assump
 
 - `references/program-framework.md`: the full document frame, section by section, with notes on what goes where.
 - `references/design-principles.md`: curriculum development theory condensed into working rules, verb tables and the review checklist.
-- `references/sample-module.md`: one complete module from the source standard, for calibration.
+- `references/sample-module.md`: one complete sample module, for calibration.
 - `references/overview-format.md`: format of the overview tree.
 - `references/json-schema.md`: every key of `program.json` on one page.
 - `templates/program.example.json`: complete data structure, a real 45-hour course.

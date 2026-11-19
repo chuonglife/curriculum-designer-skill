@@ -4,7 +4,7 @@
 
 You type one sentence, for example "build a 24-hour onboarding program for new support agents". Claude analyzes the job, derives the modules from it, writes the objectives, and hands back a formatted document you can send to a training manager or an accreditation reviewer.
 
-It works in Claude Code, the Claude desktop and web apps, and the Claude Agent SDK. MIT licensed. Output in English or Vietnamese.
+It works in Claude Code, the Claude desktop and web apps, and the Claude Agent SDK. MIT licensed. Output in English.
 
 Companion skill: [Lesson Content Writer](https://github.com/chuonglife/lesson-content-writer-skill) takes each lesson of the program and writes it out in full, with objectives, instructor script, questions, practice, quiz and handouts. Then [Lesson Slide Designer](https://github.com/chuonglife/lesson-slide-designer-skill) turns each lesson into a teaching slide deck (PowerPoint) and a video script. Finally, [Lesson Video Producer](https://github.com/chuonglife/lesson-video-producer-skill) turns the slides into a narrated, animated lesson video. And [Lesson Assessment Designer](https://github.com/chuonglife/lesson-assessment-designer-skill) writes the quiz, test and rubric for each lesson from its objectives.
 
@@ -204,7 +204,7 @@ Every program has the same six sections, and every module the same seven. A fixe
 | VI. Program implementation guidelines | 6. Implementation guidelines |
 | | 7. References |
 
-The frame comes from Appendix I of Circular 06/2022/TT-BLDTBXH, the national pedagogical training standard for vocational teachers in Vietnam. It was chosen because it forces hours, objectives and assessment to be stated at every level.
+This is a competency-based training (CBT) program frame. It is strict on purpose: hours, objectives and assessment must be stated at every level, so a gap shows at once. It does not follow any national regulation. If your institution must meet one, name it and Claude adds it as the basis note under the title.
 
 ## The design rules it enforces
 
@@ -262,7 +262,7 @@ DACUM (Developing A Curriculum) is an occupational analysis method from Canada, 
 
 ### Can I change the document template or the language?
 
-The section order is fixed on purpose. Headings exist in English and Vietnamese. Set `"language": "en"` or `"vi"` in `program.json`. With `"vi"` the four files get Vietnamese names too: `01_Chuong_trinh_dao_tao` and `00_Tong_quan_chuong_trinh`. Any other language code builds in English and says so on the console. To add a language, add one block to the `LABELS` dictionary in `scripts/build_docs.py`.
+The section order is fixed on purpose. Headings ship in English only. Any other `"language"` code builds in English and says so on the console. To add a language, add one block to the `LABELS` dictionary in `scripts/build_docs.py`, and one to `MINUTE_LABELS` for micro-courses.
 
 ### Why does Word show no navigation pane or table of contents?
 
@@ -294,7 +294,7 @@ examples/                        generated sample output
 
 ## Sources and credits
 
-- Circular 06/2022/TT-BLDTBXH, Appendix I (Vietnam, Ministry of Labour, Invalids and Social Affairs): document structure and the calibration module.
+- Circular 06/2022/TT-BLDTBXH, Appendix I (Vietnam, Ministry of Labour, Invalids and Social Affairs): the section order of the document frame was adapted from it, and the calibration module was translated from it.
 - Nguyen Van Tuan (2022), *Training program development*, Ho Chi Minh City University of Technology and Education.
 - Diep Phuong Chi (2026), course slides on training program development, Ho Chi Minh City University of Technology and Education.
 - Tyler (1949), Wentling (1993), Anderson and Krathwohl (2001), Norton (1997, *DACUM Handbook*).

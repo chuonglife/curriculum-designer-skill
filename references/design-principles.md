@@ -83,7 +83,7 @@ Weak versus strong:
 ## 7. Allocating hours
 
 - Units: one theory hour is 45 minutes; one practice, integrated or discussion hour is 60 minutes; one assessment hour is 60 minutes. Use the institution's own units when given.
-- Reference ratio from the source standard (248 required hours): 84 theory, 152 practice, 12 assessment. Roughly one third theory, two thirds practice. An orientation module may sit near 1:1. A skill module should have practice at least double theory.
+- Reference ratio from the source teacher training program (248 required hours): 84 theory, 152 practice, 12 assessment. Roughly one third theory, two thirds practice. An orientation module may sit near 1:1. A skill module should have practice at least double theory.
 - Assessment: 1 to 2 hours per module. A very short module (4 hours or less) may have none.
 - Lesson length: 2 to 16 hours. Two-hour lessons are usually overviews or procedures. Ten-to-sixteen-hour lessons are practice lessons that end in a product.
 - Live online sessions: keep one sitting to 90 to 120 minutes with a break, and at most 4 teaching hours a day. Count instructor presentation as theory. Count breakout work, role play, supervised practice on real tools and debriefs as practice. Put reading and recorded demos before the session as pre-work so live time goes to practice and feedback. State group size in the delivery conditions; 12 to 20 learners per facilitator is a workable range for skill practice.
@@ -133,8 +133,7 @@ Complete duty and task map, accurate task analysis, correct program objective, m
 
 ## Sources
 
-- Circular 06/2022/TT-BLDTBXH (Vietnam), Appendix I: Pedagogical training program for teachers at college and intermediate vocational level. Module M02, Training program development.
-- Circular 03/2017/TT-BLDTBXH and Circular 01/2024/TT-BLDTBXH (Vietnam): procedures and formats for vocational training programs.
+- Circular 06/2022/TT-BLDTBXH, Appendix I, module M02, Training program development, and Circulars 03/2017/TT-BLDTBXH and 01/2024/TT-BLDTBXH on procedures and formats for vocational training programs (Vietnam). Used as source material; the skill adapts them and claims no compliance with them.
 - Nguyen Van Tuan (2022), Training program development (textbook for vocational teacher training), Ho Chi Minh City University of Technology and Education.
 - Diep Phuong Chi (2026), Training program development, course slides, Ho Chi Minh City University of Technology and Education.
 - Tyler, R. W. (1949), Basic Principles of Curriculum and Instruction, University of Chicago Press.

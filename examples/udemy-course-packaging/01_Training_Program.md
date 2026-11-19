@@ -1,7 +1,5 @@
 # TRAINING PROGRAM: PACKAGING AND PUBLISHING AN ONLINE COURSE ON UDEMY
 
-*(Structured after Appendix I, Circular 06/2022/TT-BLDTBXH, the national pedagogical training standard for vocational teachers in Vietnam)*
-
 ## I. TARGET LEARNERS
 
 Teachers, lecturers, tutors, corporate trainers, coaches and mentors who want to turn what they already teach into a complete video course and publish it themselves on Udemy.
@@ -131,7 +129,7 @@ On completing this lesson, learners are able to:
 
 4.3. Learning materials, tools and supplies: Lecture videos, slides, a downloadable course structure map template, a list of reference Udemy courses.
 
-4.4. Other resources: The Digital Teaching module of the national pedagogical training program for vocational teachers.
+4.4. Other resources: The Udemy Teaching Center course creation guidelines.
 
 #### 5. ASSESSMENT CONTENT AND METHODS
 
@@ -159,9 +157,7 @@ On completing this lesson, learners are able to:
 
 #### 7. REFERENCES
 
-[1] Ministry of Labour, Invalids and Social Affairs of Vietnam (2022), Circular 06/2022/TT-BLDTBXH, pedagogical training program for vocational teachers, module on digital teaching in vocational education.
-
-[2] Udemy, Teaching Center: course creation guidelines, https://teach.udemy.com/.
+[1] Udemy, Teaching Center: course creation guidelines, https://teach.udemy.com/.
 
 ### MODULE M02: DEFINING OBJECTIVES AND CONTENT FOR A DIGITAL COURSE
 
@@ -266,8 +262,6 @@ On completing this lesson, learners are able to:
 #### 7. REFERENCES
 
 [1] Anderson, L. W., Krathwohl, D. R. (2001), A Taxonomy for Learning, Teaching, and Assessing: A Revision of Bloom's Taxonomy of Educational Objectives, Longman.
-
-[2] Ministry of Labour, Invalids and Social Affairs of Vietnam (2022), Circular 06/2022/TT-BLDTBXH, module on digital teaching in vocational education.
 
 ### MODULE M03: DESIGNING TEXT AND IMAGE LEARNING MATERIALS
 
@@ -390,8 +384,6 @@ On completing this lesson, learners are able to:
 #### 7. REFERENCES
 
 [1] Reynolds, G. (2019), Presentation Zen: Simple Ideas on Presentation Design and Delivery, 3rd ed., New Riders.
-
-[2] Ministry of Labour, Invalids and Social Affairs of Vietnam (2022), Circular 06/2022/TT-BLDTBXH, module on digital teaching in vocational education.
 
 ### MODULE M04: DESIGNING AUDIO AND VIDEO LEARNING MATERIALS
 
@@ -633,8 +625,6 @@ On completing this lesson, learners are able to:
 
 [1] Udemy, Course creation guidelines, Udemy Teaching Center, https://teach.udemy.com/.
 
-[2] Ministry of Labour, Invalids and Social Affairs of Vietnam (2022), Circular 06/2022/TT-BLDTBXH, module on digital teaching in vocational education.
-
 ### MODULE M06: UPLOADING AND PUBLISHING THE COURSE ON UDEMY
 
 **Duration:** 7 hours (Theory: 3 hours; Practice, discussion: 3 hours; Assessment: 1 hour)
@@ -825,8 +815,6 @@ On completing this lesson, learners are able to:
 [1] Udemy, Instructor Terms, https://www.udemy.com/terms/instructor/.
 
 [2] World Intellectual Property Organization, Berne Convention for the Protection of Literary and Artistic Works.
-
-[3] Government of Vietnam (2023), Decree 13/2023/ND-CP on personal data protection.
 
 ### MODULE M08: FINAL PROGRAM ASSESSMENT (RUBRIC FOR THE COMPLETE UDEMY COURSE)
 

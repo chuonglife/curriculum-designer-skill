@@ -63,6 +63,8 @@ BODY_PT = 13
 GROUPS = ["knowledge", "skills", "autonomy"]
 
 # --------------------------------------------------------------------------- labels
+# One entry per output language. Only "en" ships. To add a language, add an entry
+# here and in MINUTE_LABELS (and WEAK_VERBS) with the same keys.
 LABELS = {
     "en": {
         "knowledge": "Knowledge",
@@ -133,75 +135,6 @@ LABELS = {
         "file_program": "01_Training_Program",
         "file_overview": "00_Program_Overview",
     },
-    "vi": {
-        "knowledge": "Kiến thức",
-        "skills": "Kỹ năng",
-        "autonomy": "Năng lực tự chủ và trách nhiệm",
-        "s1": "I. ĐỐI TƯỢNG BỒI DƯỠNG",
-        "s2": "II. MỤC TIÊU BỒI DƯỠNG",
-        "s2_1": "1. Mục tiêu chung",
-        "s2_2": "2. Mục tiêu cụ thể",
-        "s3": "III. THỜI GIAN BỒI DƯỠNG VÀ ĐƠN VỊ THỜI GIAN TRONG CHƯƠNG TRÌNH",
-        "s3_1": "1. Thời gian bồi dưỡng: {n} giờ.",
-        "s3_2": "Đơn vị thời gian của giờ học: Một giờ học lý thuyết là 45 phút; một giờ học thực hành/tích hợp/thảo luận là 60 phút; một giờ thi, kiểm tra là 60 phút.",
-        "s4": "IV. DANH MỤC CÁC MÔ-ĐUN VÀ PHÂN BỔ THỜI GIAN",
-        "s5": "V. CHƯƠNG TRÌNH CHI TIẾT",
-        "s6": "VI. HƯỚNG DẪN THỰC HIỆN CHƯƠNG TRÌNH",
-        "col_code": "Mã mô-đun",
-        "col_module": "Tên mô-đun",
-        "col_no": "TT",
-        "col_lessons": "Tên các bài trong mô-đun",
-        "col_time": "Thời gian (giờ)",
-        "col_total": "Tổng số",
-        "col_theory": "Lý thuyết",
-        "col_practice": "Thực hành/ Thảo luận",
-        "col_assess": "Thi/ kiểm tra",
-        "required": "MÔ-ĐUN BẮT BUỘC",
-        "elective": "MÔ-ĐUN TỰ CHỌN",
-        "grand_total": "Tổng cộng",
-        "grand_total_ab": "Tổng cộng (A+B)",
-        "sum": "Cộng",
-        "exam_row": "Thi, kiểm tra",
-        "module": "MÔ-ĐUN",
-        "duration": "Thời gian thực hiện: ",
-        "duration_rest": "{t} giờ (Lý thuyết: {a} giờ; Thực hành, thảo luận: {b} giờ; Thi/ kiểm tra: {c} giờ)",
-        "m1": "1. VỊ TRÍ, TÍNH CHẤT CỦA MÔ-ĐUN",
-        "position": "Vị trí",
-        "nature": "Tính chất",
-        "m2": "2. MỤC TIÊU MÔ-ĐUN",
-        "m2_lead": "Hoàn thành mô-đun này, người học có khả năng:",
-        "m3": "3. NỘI DUNG MÔ-ĐUN",
-        "m3_1": "3.1. Nội dung tổng quát và phân bổ thời gian",
-        "m3_2": "3.2. Nội dung chi tiết của mô-đun",
-        "lesson": "Bài",
-        "lesson_time": "Thời gian: {n} giờ",
-        "lesson_time_video": "Thời gian: {n} giờ, trong đó video: {v} phút",
-        "obj": "* Mục tiêu:",
-        "obj_lead": "Hoàn thành bài học này, người học có khả năng:",
-        "content": "* Nội dung:",
-        "m4": "4. ĐIỀU KIỆN THỰC HIỆN MÔ-ĐUN",
-        "m4_1": "4.1. Phòng học chuyên môn hóa",
-        "m4_2": "4.2. Trang thiết bị máy móc",
-        "m4_3": "4.3. Học liệu, dụng cụ, vật liệu",
-        "m4_4": "4.4. Nguồn lực khác",
-        "m5": "5. NỘI DUNG VÀ PHƯƠNG PHÁP ĐÁNH GIÁ",
-        "m5_1": "5.1. Nội dung",
-        "m5_2": "5.2. Phương pháp đánh giá",
-        "m6": "6. HƯỚNG DẪN THỰC HIỆN MÔ-ĐUN",
-        "m6_1": "6.1. Phạm vi áp dụng mô-đun",
-        "m6_2": "6.2. Hướng dẫn về phương pháp giảng dạy, học tập mô-đun",
-        "instructor": "Giảng viên",
-        "learners": "Người học",
-        "m6_3": "6.3. Những trọng tâm chương trình cần chú ý",
-        "m7": "7. TÀI LIỆU THAM KHẢO",
-        "overview_title": "TỔNG QUAN CHƯƠNG TRÌNH ĐÀO TẠO",
-        "tree_root": "Chương trình: {t} ({n} giờ)",
-        "tree_mod": "{c} - {t} ({n} giờ: LT {a}, TH {b}, Thi/KT {x})",
-        "tree_lesson": "{t} ({n} giờ)",
-        "tree_lesson_video": "{t} ({n} giờ, video {v} phút)",
-        "file_program": "01_Chuong_trinh_dao_tao",
-        "file_overview": "00_Tong_quan_chuong_trinh",
-    },
 }
 
 # Overrides applied on top of LABELS when "time_unit" is "minutes" (micro-courses).
@@ -218,19 +151,6 @@ MINUTE_LABELS = {
         "tree_mod": "{c} - {t} ({n} minutes: Theory {a}, Practice {b}, Assessment {x})",
         "tree_lesson": "{t} ({n} minutes)",
         "tree_lesson_video": "{t} ({n} minutes, video {v} minutes)",
-    },
-    "vi": {
-        "s3_1": "1. Thời gian bồi dưỡng: {n} phút học của người học (khoảng {h} giờ).",
-        "s3_2": "Đơn vị thời gian: mọi thời lượng trong chương trình tính bằng phút học của người học. Lý thuyết là thời gian xem video bài giảng; thực hành là thời gian làm nhiệm vụ dừng, bài luyện và bài tập; thi/ kiểm tra là thời gian làm quiz và bài kiểm tra có chấm điểm.",
-        "col_time": "Thời gian (phút)",
-        "col_total": "Tổng số (phút)",
-        "duration_rest": "{t} phút (Lý thuyết: {a} phút; Thực hành, thảo luận: {b} phút; Thi/ kiểm tra: {c} phút)",
-        "lesson_time": "Thời gian: {n} phút",
-        "lesson_time_video": "Thời gian: {n} phút, trong đó video: {v} phút",
-        "tree_root": "Chương trình: {t} ({n} phút)",
-        "tree_mod": "{c} - {t} ({n} phút: LT {a}, TH {b}, Thi/KT {x})",
-        "tree_lesson": "{t} ({n} phút)",
-        "tree_lesson_video": "{t} ({n} phút, video {v} phút)",
     },
 }
 
@@ -254,7 +174,6 @@ def labels_for(lang, unit):
 # Opening verbs that cannot be observed or measured. Used by the objective linter.
 WEAK_VERBS = {
     "en": ["understand", "know", "learn", "be aware", "be familiar", "appreciate", "grasp", "realize", "realise", "comprehend", "master"],
-    "vi": ["hiểu", "biết", "nắm", "nhận thức", "làm quen"],
 }
 
 
@@ -449,7 +368,7 @@ def lesson_time(les, T, n):
 
 def lesson_title(les, T):
     t = les["title"].strip()
-    if re.match(r"^(Lesson|Bài|Unit)\s*\d+\s*:", t, re.I):
+    if re.match(r"^(Lesson|Unit)\s*\d+\s*:", t, re.I):
         return t
     return f"{T['lesson']} {les['_no']}: {t}"
 
@@ -460,7 +379,7 @@ def overview_items(les):
     out = []
     for line in as_list(les.get("content")):
         mm = re.match(r"^(\d+)\.\s+(.*)$", line.strip())
-        if mm and not re.match(r"^(practice|discussion|exercise|thực hành|thảo luận|luyện tập)\b", mm.group(2).strip(), re.I):
+        if mm and not re.match(r"^(practice|discussion|exercise)\b", mm.group(2).strip(), re.I):
             out.append(mm.group(2).strip())
     return out
 
@@ -881,7 +800,7 @@ def main():
     os.makedirs(outdir, exist_ok=True)
     lang = prog.get("language", "en")
     if lang not in LABELS:
-        print(f"Unknown language '{lang}'. Available: {', '.join(LABELS)}. Falling back to 'en'.")
+        print(f"Language '{lang}' is not available. Available: {', '.join(LABELS)}. Building in English ('en').")
         lang = "en"
     unit = prog.get("time_unit", "hours")
     if unit not in UNIT_KEYS:

@@ -5,12 +5,12 @@
 All time values are **whole numbers** in the unit set by `time_unit`: hours by default, minutes for a micro-course. The script rejects fractions. If a module needs half an hour of assessment, fold it into a lesson's practice time or round the module to full hours, or switch the program to minutes.
 
 ```
-language                 "en" | "vi"                 heading language, default "en"
+language                 "en"                        heading language, default "en" (only "en" ships)
 time_unit                "hours" | "minutes"         default "hours"; see "Micro-courses" below
 slug                     string                      folder name, informational
 subtitle                 string, may be ""           line printed above the title
 program_title            string   REQUIRED           printed as given, usually capitals
-basis_note               string, may be ""           italic line under the title
+basis_note               string, normally ""         italic line under the title; only a basis the user names
 total_hours              integer, optional           cross-check only; build fails on mismatch
                                                      (total_minutes in minutes mode)
 target_learners          string | [string]           section I, one paragraph each

@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.1.2 - 2026-11-19
+
+The skill is for an international audience. This release removes the Vietnamese output mode and the Vietnamese legal framing.
+
+### Removed
+
+- `build_docs.py`: the Vietnamese output mode. The `"vi"` headings, the Vietnamese file names, the Vietnamese weak verbs in the objective lint and the Vietnamese words in two pattern checks are gone. `LABELS` keeps the same structure with `"en"` only, so another language can still be added. A `program.json` with `"language": "vi"` (or any other code) builds in English and says so on the console.
+- README and SKILL.md: the promise of Vietnamese headings and file names, including the FAQ entry about them.
+- `templates/program.example.json` and `examples/udemy-course-packaging/`: the citations of Vietnamese regulations. `basis_note` is now empty, the module references no longer list Circular 06/2022/TT-BLDTBXH or Decree 13/2023/ND-CP, and "Other resources" in M01 names the Udemy Teaching Center guidelines.
+- `references/sample-module.md`: the two Vietnamese regulations in the sample's reference list.
+
+### Changed
+
+- README, SKILL.md and the reference files present the document as the skill's own competency-based training (CBT) frame. They no longer say it follows a national standard. Circular 06/2022/TT-BLDTBXH stays in "Sources and credits" as the source the section order was adapted from.
+- SKILL.md: never cite a national regulation, law or standard in `basis_note` unless the user names one for their own program.
+
+### Unchanged
+
+- English output. The Markdown of `examples/support-agent-onboarding/` is identical to v1.1.1. The Markdown of `examples/udemy-course-packaging/` and of `templates/program.example.json` differs only in the lines that cited Vietnamese regulations: the basis line under the title, M01 "Other resources", and the reference entries in M01, M02, M03, M05 and M07 (with M01's remaining reference renumbered).
+
 ## v1.1.1 - 2026-11-19
 
 Fixes from an audit as a new user on a clean machine: fresh clone, fresh venv, every README command run as written.

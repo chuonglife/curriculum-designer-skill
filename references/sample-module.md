@@ -1,6 +1,6 @@
-# Calibration sample: Module M02 of the source standard
+# Calibration sample: Module M02, Training program development
 
-Translated from Appendix I, Circular 06/2022/TT-BLDTBXH (Vietnam). Read it to get the density, the register and the numbering right. Do not copy its content into a new program.
+A complete module written in this frame, from a pedagogical training program for vocational teachers (see Sources and credits in the README). Read it to get the density, the register and the numbering right. Do not copy its content into a new program.
 
 ---
 
@@ -94,8 +94,6 @@ On completing this lesson, learners are able to:
 6.3. Key points to emphasize: Determining the objectives and learning outcomes of a program; designing, evaluating and improving a program.
 
 7. REFERENCES
-[1] Ministry of Labour, Invalids and Social Affairs (Vietnam), Circular 03/2017/TT-BLDTBXH of 1 March 2017 on developing, appraising and issuing training programs.
-[2] Government of Vietnam, Vietnamese Qualifications Framework, Decision 1982/QD-TTg of 18 October 2016.
-[3] Nguyen Duc Chinh (ed.), Vu Lan Huong (2015), Curriculum Development, Vietnam Education Publishing House.
-[4] Nguyen Vu Bich Hien (ed.), Nguyen Thi Thu Hang (2016), Curriculum Development and Management, University of Education Publishing House.
-[5] Robert E. Norton (1997), DACUM Handbook, Ohio State University, Columbus, Ohio.
+[1] Nguyen Duc Chinh (ed.), Vu Lan Huong (2015), Curriculum Development, Vietnam Education Publishing House.
+[2] Nguyen Vu Bich Hien (ed.), Nguyen Thi Thu Hang (2016), Curriculum Development and Management, University of Education Publishing House.
+[3] Robert E. Norton (1997), DACUM Handbook, Ohio State University, Columbus, Ohio.
